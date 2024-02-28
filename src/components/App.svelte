@@ -1,6 +1,5 @@
 <script>
   import * as d3 from "d3";
-  import Scroller from "@sveltejs/svelte-scroller";
   import DataPoints from "./DataPoints.svelte";
   import { onMount } from "svelte";
 
@@ -15,10 +14,14 @@
 </script>
 
 <main>
-  <h1>Svelte template</h1>
-  <DataPoints {data} />
-  <p>Write your HTML here</p>
+  <h1>KNN Machine Learning</h1>
+  <p style = "padding:20px;">Introduction to KNN</p>
+  <DataPoints {data}/>
+  <p style = "padding:20px;">Write your HTML here</p>
 </main>
 
 <style>
+  main {
+    text-align: center;
+  }
 </style>
