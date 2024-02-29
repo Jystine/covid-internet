@@ -12,8 +12,11 @@
     let svg;
     let gx;
     let gy;
-    let k;
-    let data_class = {};
+    let k = 3;
+    let show_true = false;
+    let button;
+    $: data_class = classification(data, k);
+    $: slider_label = `k = ${k}`;
 
     $: x = d3
     .scaleLinear()
@@ -85,11 +88,15 @@
           });
           result[i] = class_items[0][0]
           }
-          return result;
+          var result_items =  Object.keys(result).map(function(key) {
+            return [key, result[key]];
+          });
+          return result_items;
       }
 
-      $: console.log(classification(data, 3));
+      $: console.log(data_class);
       $: console.log(data);
+      $: console.log(show_true);
 
 </script>
 
@@ -106,11 +113,8 @@
     <g bind:this = {gx} transform = "translate(0, {height - marginBottom})"/>
     <g bind:this = {gy} transform = "translate({marginLeft}, 0)"/>
 
-    {#if data.length !== 0}
+    <!-- {#if data.length !== 0}
       {#each data as d, i}
-      <!-- $(document).ready(function(){
-        console.log(circleSize(d.sepal_width))
-      }); -->
         {#if d.class === "Iris-setosa"}
           <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = {color(d.sepal_length)} stroke = "#000" r = {circleSize(d.sepal_width)}/>
         {/if}
@@ -118,11 +122,43 @@
           <rect key = {i} width = {rectangleSize(d.sepal_width)} height = {rectangleSize(d.sepal_width)} x = {x(d.petal_width)} y = {y(d.petal_length)} fill = {color(d.sepal_length)} stroke = "#000"/>
         {/if}
         {#if d.class === "Iris-virginica"}
-          <!-- <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = {color(d.sepal_length)} stroke = "#000" r = "5"/> -->
-          <!-- <polygon key = {i} points = "{x(d.petal_width)}, 10, 10, 10, 10, {y(d.petal_length)}" fill = {color(d.sepal_length)} stroke = "#000"/> -->
           <g transform = {`translate(${x(d.petal_width)}, ${y(d.petal_length)})`}>
             <path d="M{triangleSize(d.sepal_width)/4},{triangleSize(d.sepal_width)/2} h{triangleSize(d.sepal_width)/2} l{-triangleSize(d.sepal_width)/4},{-triangleSize(d.sepal_width)/2} Z" fill = {color(d.sepal_length)} stroke = "#000"/>
           </g>
+        {/if}
+      {/each}
+    {/if} -->
+
+    {#if data_class.length !== 0}
+      {#each data_class as d}
+        <!-- $(document).ready(function(){
+            console.log(data[0])
+        }); -->
+        {#if show_true == false}
+          {#if d[1] === "Iris-setosa"}
+            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = {color(data[d[0]].sepal_length)} stroke = "#000" r = "5"/>
+          {/if}
+          {#if d[1] === "Iris-versicolor"}
+            <rect key = {d[0]} width = 10 height = 10 x = {x(data[d[0]].petal_width)} y = {y(data[d[0]].petal_length)} fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
+          {/if}
+          {#if d[1] === "Iris-virginica"}
+            <g transform = {`translate(${x(data[d[0]].petal_width)}, ${y(data[d[0]].petal_length)})`}>
+              <path d="M{30/4},{30/2} h{30/2} l{-30/4},{-30/2} Z" fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
+            </g>
+          {/if}
+        {/if}
+        {#if show_true == true}
+          {#if data[d[0]].class === "Iris-setosa"}
+            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = {color(data[d[0]].sepal_length)} stroke = "#000" r = "5"/>
+          {/if}
+          {#if data[d[0]].class === "Iris-versicolor"}
+            <rect key = {d[0]} width = 10 height = 10 x = {x(data[d[0]].petal_width)} y = {y(data[d[0]].petal_length)} fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
+          {/if}
+          {#if data[d[0]].class === "Iris-virginica"}
+            <g transform = {`translate(${x(data[d[0]].petal_width)}, ${y(data[d[0]].petal_length)})`}>
+              <path d="M{30/4},{30/2} h{30/2} l{-30/4},{-30/2} Z" fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
+            </g>
+          {/if}
         {/if}
       {/each}
     {/if}
@@ -136,6 +172,19 @@
     style = "writing-mode: vertical-lr; transform: rotate(180deg);">Pedal Length</text>
   </svg>
 </div>
+<div class = "slider_class">
+  <label>{slider_label}</label>
+  <input
+    id = "slider"
+    type = "range"
+    min = "1"
+    max = "149"
+    bind:value = {k}
+  />
+</div>
+<div class = "button">
+  <button bind:this = {button} on:click = {() => {show_true = !show_true}}>Show Actual Data</button>
+</div>
 
 <style>
   circle {
@@ -145,5 +194,8 @@
   rect {
     fill-opacity: 100%;
     stroke-opacity: 100%;
+  }
+  button {
+    margin-bottom: 1em;
   }
 </style>
