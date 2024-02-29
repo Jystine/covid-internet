@@ -12,8 +12,8 @@
     let svg;
     let gx;
     let gy;
-
-    let size = 30;
+    let k;
+    let data_class = {};
 
     $: x = d3
     .scaleLinear()
@@ -54,6 +54,43 @@
       .domain([d3.min(data,(d) => d.sepal_width), d3.max(data, (d) => d.sepal_width)])
       .range([30, 60])
 
+      function classification(data, k) {
+        let result = {}
+        let distance;
+        for (let i = 0; i < data.length; i++) {
+          let distance_dict = {};
+          let classes = {'Iris-virginica': 0, 'Iris-setosa': 0, "Iris-versicolor": 0};
+          for (let j = 0; j < data.length; j++) {
+            if (i === j) {
+              continue;
+            } else {
+              distance = Math.sqrt(((data[i].petal_length - data[j].petal_length) ** 2) + ((data[i].petal_width - data[j].petal_width) ** 2) + ((data[i].sepal_length - data[j].sepal_length) ** 2) + ((data[i].sepal_width - data[j].sepal_width) ** 2))
+              distance_dict[j] = distance;
+            }
+          }
+          var dist_items = Object.keys(distance_dict).map(function(key) {
+            return [key, distance_dict[key]];
+          });
+          dist_items.sort(function(first, second) {
+            return first[1] - second[1];
+          });
+          for (let n = 0; n < k; n++){
+            classes[data[dist_items[n][0]].class] = classes[data[dist_items[n][0]].class] + 1;
+          }
+          var class_items = Object.keys(classes).map(function(key) {
+            return [key, classes[key]];
+          });
+          class_items.sort(function(first, second) {
+            return second[1] - first[1];
+          });
+          result[i] = class_items[0][0]
+          }
+          return result;
+      }
+
+      $: console.log(classification(data, 3));
+      $: console.log(data);
+
 </script>
 
 <div class = "plot">
@@ -71,9 +108,9 @@
 
     {#if data.length !== 0}
       {#each data as d, i}
-      $(document).ready(function(){
+      <!-- $(document).ready(function(){
         console.log(circleSize(d.sepal_width))
-      });
+      }); -->
         {#if d.class === "Iris-setosa"}
           <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = {color(d.sepal_length)} stroke = "#000" r = {circleSize(d.sepal_width)}/>
         {/if}
