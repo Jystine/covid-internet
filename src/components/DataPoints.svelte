@@ -15,6 +15,13 @@
     let k = 3;
     let show_true = false;
     let button;
+    $: petal_width_max = d3.max(data, (d) => d.petal_width);
+    $: petal_length_max = d3.max(data, (d) => d.petal_length);
+    $: sepal_length_max = d3.max(data, (d) => d.sepal_length);
+    $: sepal_width_max = d3.max(data, (d) => d.sepal_width);
+    $: petal_width_area = create_area(100, petal_width_max);
+    $: accuracy_score = accuracy(data, data_class)
+    $: button_t = button_text(show_true);
     $: data_class = classification(data, k);
     $: slider_label = `k = ${k}`;
 
@@ -40,8 +47,6 @@
       .domain([min, max])
       .interpolator(d3.interpolateViridis)
 
-    $: console.log(data);
-
     $: circleSize = d3
       .scaleLinear()
       .domain([d3.min(data,(d) => d.sepal_width), d3.max(data, (d) => d.sepal_width)])
@@ -56,6 +61,35 @@
       .scaleLinear()
       .domain([d3.min(data,(d) => d.sepal_width), d3.max(data, (d) => d.sepal_width)])
       .range([30, 60])
+
+      function create_area(range, max) {
+        let area_lst = []
+        for (let i = 0; i <= max; i = i + max/range) {
+          area_lst.push(parseFloat(i.toFixed(3)));
+        }
+        return area_lst;
+      }
+
+      function classify_area(data, area, k) {
+      }
+
+      function accuracy(data, data_class) {
+        let correct = 0;
+        for (let i = 0; i < data_class.length; i++) {
+          if (data[data_class[i][0]].class === data_class[i][1]) {
+            correct = correct + 1;
+          }
+        }
+        return Math.round((correct / data_class.length).toFixed(2) * 100);
+      }
+
+      function button_text(status) {
+        if(status === false) {
+          return "Show Actual Data"
+        } else if (status === true) {
+          return "Hide Actual Data"
+        }
+      }
 
       function classification(data, k) {
         let result = {}
@@ -94,8 +128,8 @@
           return result_items;
       }
 
-      $: console.log(data_class);
-      $: console.log(data);
+      $: console.log(accuracy(data, data_class));
+      $: console.log(petal_width_area);
       $: console.log(show_true);
 
 </script>
@@ -139,11 +173,11 @@
             <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = {color(data[d[0]].sepal_length)} stroke = "#000" r = "5"/>
           {/if}
           {#if d[1] === "Iris-versicolor"}
-            <rect key = {d[0]} width = 10 height = 10 x = {x(data[d[0]].petal_width)} y = {y(data[d[0]].petal_length)} fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
+            <rect key = {d[0]} width = 10 height = 10 x = {x(data[d[0]].petal_width) - 5} y = {y(data[d[0]].petal_length) - 5} fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
           {/if}
           {#if d[1] === "Iris-virginica"}
-            <g transform = {`translate(${x(data[d[0]].petal_width)}, ${y(data[d[0]].petal_length)})`}>
-              <path d="M{30/4},{30/2} h{30/2} l{-30/4},{-30/2} Z" fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
+            <g transform = {`translate(${x(data[d[0]].petal_width) - 15}, ${y(data[d[0]].petal_length) - 8})`}>
+              <path d = "M{30/4},{30/2} h{30/2} l{-30/4},{-30/2} Z" fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
             </g>
           {/if}
         {/if}
@@ -152,10 +186,10 @@
             <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = {color(data[d[0]].sepal_length)} stroke = "#000" r = "5"/>
           {/if}
           {#if data[d[0]].class === "Iris-versicolor"}
-            <rect key = {d[0]} width = 10 height = 10 x = {x(data[d[0]].petal_width)} y = {y(data[d[0]].petal_length)} fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
+            <rect key = {d[0]} width = 10 height = 10 x = {x(data[d[0]].petal_width) - 5} y = {y(data[d[0]].petal_length) - 5} fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
           {/if}
           {#if data[d[0]].class === "Iris-virginica"}
-            <g transform = {`translate(${x(data[d[0]].petal_width)}, ${y(data[d[0]].petal_length)})`}>
+            <g transform = {`translate(${x(data[d[0]].petal_width) - 15}, ${y(data[d[0]].petal_length) - 8})`}>
               <path d="M{30/4},{30/2} h{30/2} l{-30/4},{-30/2} Z" fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
             </g>
           {/if}
@@ -170,20 +204,35 @@
     x = 10
     y = -300
     style = "writing-mode: vertical-lr; transform: rotate(180deg);">Pedal Length</text>
+    <g class = "legend" stroke = "#000">
+      <circle cx = 1000 cy = 100 fill = "#000" stroke = "#000" r = "13"/>
+      <text x = 1030 y = 108 font-size = 20>Iris-setosa</text>
+      <g transform = "translate(980, 150)">
+        <path d="M{40/4},{40/2} h{40/2} l{-40/4},{-40/2} Z" fill = "#000" stroke = "#000"/>
+      </g>
+      <rect width = 20 height = 20 x = 990 y = 215 fill ="#000"/>
+    </g>
+    <g class = "accuracy_score">
+      {#if show_true === false}
+        <text>Accuracy Score: {accuracy_score}%</text>
+      {/if}
+    </g>
   </svg>
 </div>
-<div class = "slider_class">
-  <label>{slider_label}</label>
-  <input
-    id = "slider"
-    type = "range"
-    min = "1"
-    max = "149"
-    bind:value = {k}
-  />
-</div>
-<div class = "button">
-  <button bind:this = {button} on:click = {() => {show_true = !show_true}}>Show Actual Data</button>
+<div class = "overlay">
+  <div class = "slider_class">
+    <label>{slider_label}</label>
+    <input
+      id = "slider"
+      type = "range"
+      min = "1"
+      max = "149"
+      bind:value = {k}
+    />
+  </div>
+  <div class = "button">
+    <button bind:this = {button} on:click = {() => {show_true = !show_true}} style = "margin: 10px">{button_t}</button>
+  </div>
 </div>
 
 <style>
@@ -197,5 +246,8 @@
   }
   button {
     margin-bottom: 1em;
+  }
+  .overlay {
+    transform: translate(0, 70%);
   }
 </style>

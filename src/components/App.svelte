@@ -17,7 +17,7 @@
   <h1>KNN Machine Learning</h1>
   <p style = "padding:20px;">Introduction to KNN</p>
   <DataPoints {data}/>
-  <p style = "padding:20px;">Write your HTML here</p>
+  <p style = "padding:30px;">Write your HTML here</p>
 </main>
 
 <style>
