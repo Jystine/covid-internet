@@ -19,8 +19,8 @@
     $: petal_length_max = d3.max(data, (d) => d.petal_length);
     $: sepal_length_max = d3.max(data, (d) => d.sepal_length);
     $: sepal_width_max = d3.max(data, (d) => d.sepal_width);
-    $: petal_width_area = create_area(90, petal_width_max);
-    $: petal_length_area = create_area(90, petal_length_max);
+    $: petal_width_area = create_area(50, petal_width_max);
+    $: petal_length_area = create_area(50, petal_length_max);
     $: sepal_length_area = create_area(90, sepal_length_max);
     $: sepal_width_area = create_area(90, sepal_width_max);
     $: accuracy_score = accuracy(data, data_class)
@@ -209,13 +209,13 @@
     {#if classified_area.length !== 0}
       {#each classified_area as a}
         {#if a[1].class === "Iris-setosa"}
-            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#4059AD" r = "5"/>
+            <rect key = a[0] width = 20 height = 20 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#4059AD" r = "5"/>
         {/if}
         {#if a[1].class === "Iris-versicolor"}
-            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#97D8C4" r = "5"/>
+            <rect key = a[0] width = 20 height = 20 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#97D8C4" r = "5"/>
         {/if}
         {#if a[1].class === "Iris-virginica"}
-            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#F4B942" r = "5"/>
+            <rect key = a[0] width = 20 height = 20 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#F4B942" r = "5"/>
         {/if}
       {/each}
     {/if}
