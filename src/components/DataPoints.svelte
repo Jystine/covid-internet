@@ -19,11 +19,15 @@
     $: petal_length_max = d3.max(data, (d) => d.petal_length);
     $: sepal_length_max = d3.max(data, (d) => d.sepal_length);
     $: sepal_width_max = d3.max(data, (d) => d.sepal_width);
-    $: petal_width_area = create_area(100, petal_width_max);
+    $: petal_width_area = create_area(90, petal_width_max);
+    $: petal_length_area = create_area(90, petal_length_max);
+    $: sepal_length_area = create_area(90, sepal_length_max);
+    $: sepal_width_area = create_area(90, sepal_width_max);
     $: accuracy_score = accuracy(data, data_class)
     $: button_t = button_text(show_true);
     $: data_class = classification(data, k);
     $: slider_label = `k = ${k}`;
+    $: classified_area = classify_area(data, petal_width_area, petal_length_area, k)
 
     $: x = d3
     .scaleLinear()
@@ -70,9 +74,6 @@
         return area_lst;
       }
 
-      function classify_area(data, area, k) {
-      }
-
       function accuracy(data, data_class) {
         let correct = 0;
         for (let i = 0; i < data_class.length; i++) {
@@ -89,6 +90,44 @@
         } else if (status === true) {
           return "Hide Actual Data"
         }
+      }
+
+      function classify_area(data, area1, area2, k) {
+        let result = {}
+        let distance;
+        let idx = 0;
+        for (let i = 0; i < area1.length; i++) {
+          for (let j = 0; j < area2.length; j++) {
+            let distance_dict = {}
+            let classes = {'Iris-virginica': 0, 'Iris-setosa': 0, "Iris-versicolor": 0};
+            let point = [area1[i], area2[j]]
+            for (let d = 0; d < data.length; d++) {
+              distance = Math.sqrt(((data[d].petal_width - point[0]) ** 2) + ((data[d].petal_length - point[1]) ** 2))
+              distance_dict[d] = distance;
+            }
+            var dist_items = Object.keys(distance_dict).map(function(key) {
+            return [key, distance_dict[key]];
+            });
+            dist_items.sort(function(first, second) {
+              return first[1] - second[1];
+            });
+            for (let n = 0; n < k; n++){
+            classes[data[dist_items[n][0]].class] = classes[data[dist_items[n][0]].class] + 1;
+            }
+            var class_items = Object.keys(classes).map(function(key) {
+              return [key, classes[key]];
+            });
+            class_items.sort(function(first, second) {
+              return second[1] - first[1];
+            });
+            result[idx] = {x: point[0], y: point[1], class: class_items[0][0]}
+            idx = idx + 1;
+          }
+        }
+        var result_items =  Object.keys(result).map(function(key) {
+            return [key, result[key]];
+          });
+        return result_items;
       }
 
       function classification(data, k) {
@@ -128,9 +167,14 @@
           return result_items;
       }
 
-      $: console.log(accuracy(data, data_class));
       $: console.log(petal_width_area);
-      $: console.log(show_true);
+      $: console.log(petal_width_max);
+      $: console.log(petal_length_area);
+      $: console.log(petal_length_max);
+      $: console.log(sepal_length_area);
+      $: console.log(sepal_length_max);
+      $: console.log(sepal_width_area);
+      $: console.log(sepal_width_max);
 
 </script>
 
@@ -163,11 +207,29 @@
       {/each}
     {/if} -->
 
-    {#if data_class.length !== 0}
-      {#each data_class as d}
-        <!-- $(document).ready(function(){
+            <!-- $(document).ready(function(){
             console.log(data[0])
         }); -->
+
+    <g class = "boundary_lines" style = "position: absolute; z-index: 1;">
+    {#if classified_area.length !== 0}
+      {#each classified_area as a}
+        {#if a[1].class === "Iris-setosa"}
+            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#3DB7E4" r = "5"/>
+        {/if}
+        {#if a[1].class === "Iris-versicolor"}
+            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#FF8849" r = "5"/>
+        {/if}
+        {#if a[1].class === "Iris-virginica"}
+            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#69BE28" r = "5"/>
+        {/if}
+      {/each}
+    {/if}
+    </g>
+
+    <g class = "points" style = "position: absolute; z-index: 2;">
+    {#if data_class.length !== 0}
+      {#each data_class as d}
         {#if show_true == false}
           {#if d[1] === "Iris-setosa"}
             <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = {color(data[d[0]].sepal_length)} stroke = "#000" r = "5"/>
@@ -196,6 +258,8 @@
         {/if}
       {/each}
     {/if}
+  </g>
+
     <text x = 420 
     y = 530 
     font-size = 20>Petal Width</text>
@@ -249,5 +313,13 @@
   }
   .overlay {
     transform: translate(0, 70%);
+  }
+  .points {
+    position: absolute;
+    z-index: 2;
+  }
+  .boundary_lines {
+    position: absolute;
+    z-index: 1;
   }
 </style>
