@@ -140,7 +140,7 @@
             if (i === j) {
               continue;
             } else {
-              distance = Math.sqrt(((data[i].petal_length - data[j].petal_length) ** 2) + ((data[i].petal_width - data[j].petal_width) ** 2) + ((data[i].sepal_length - data[j].sepal_length) ** 2) + ((data[i].sepal_width - data[j].sepal_width) ** 2))
+              distance = Math.sqrt(((data[i].petal_length - data[j].petal_length) ** 2) + ((data[i].petal_width - data[j].petal_width) ** 2))
               distance_dict[j] = distance;
             }
           }
@@ -167,14 +167,8 @@
           return result_items;
       }
 
-      $: console.log(petal_width_area);
-      $: console.log(petal_width_max);
-      $: console.log(petal_length_area);
-      $: console.log(petal_length_max);
-      $: console.log(sepal_length_area);
-      $: console.log(sepal_length_max);
-      $: console.log(sepal_width_area);
-      $: console.log(sepal_width_max);
+      $: console.log(data_class);
+      $: console.log(classified_area);
 
 </script>
 
@@ -211,17 +205,17 @@
             console.log(data[0])
         }); -->
 
-    <g class = "boundary_lines" style = "position: absolute; z-index: 1;">
+    <g class = "boundary_lines">
     {#if classified_area.length !== 0}
       {#each classified_area as a}
         {#if a[1].class === "Iris-setosa"}
-            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#3DB7E4" r = "5"/>
+            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#4059AD" r = "5"/>
         {/if}
         {#if a[1].class === "Iris-versicolor"}
-            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#FF8849" r = "5"/>
+            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#97D8C4" r = "5"/>
         {/if}
         {#if a[1].class === "Iris-virginica"}
-            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#69BE28" r = "5"/>
+            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#F4B942" r = "5"/>
         {/if}
       {/each}
     {/if}
@@ -232,28 +226,24 @@
       {#each data_class as d}
         {#if show_true == false}
           {#if d[1] === "Iris-setosa"}
-            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = {color(data[d[0]].sepal_length)} stroke = "#000" r = "5"/>
+            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = "#4059AD" stroke = "#000" r = "5"/>
           {/if}
           {#if d[1] === "Iris-versicolor"}
-            <rect key = {d[0]} width = 10 height = 10 x = {x(data[d[0]].petal_width) - 5} y = {y(data[d[0]].petal_length) - 5} fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
+            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = "#97D8C4" stroke = "#000" r = "5"/>
           {/if}
           {#if d[1] === "Iris-virginica"}
-            <g transform = {`translate(${x(data[d[0]].petal_width) - 15}, ${y(data[d[0]].petal_length) - 8})`}>
-              <path d = "M{30/4},{30/2} h{30/2} l{-30/4},{-30/2} Z" fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
-            </g>
+            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = "#F4B942" stroke = "#000" r = "5"/>
           {/if}
         {/if}
         {#if show_true == true}
           {#if data[d[0]].class === "Iris-setosa"}
-            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = {color(data[d[0]].sepal_length)} stroke = "#000" r = "5"/>
+            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = "#4059AD" stroke = "#000" r = "5"/>
           {/if}
           {#if data[d[0]].class === "Iris-versicolor"}
-            <rect key = {d[0]} width = 10 height = 10 x = {x(data[d[0]].petal_width) - 5} y = {y(data[d[0]].petal_length) - 5} fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
+            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = "#97D8C4" stroke = "#000" r = "5"/>
           {/if}
           {#if data[d[0]].class === "Iris-virginica"}
-            <g transform = {`translate(${x(data[d[0]].petal_width) - 15}, ${y(data[d[0]].petal_length) - 8})`}>
-              <path d="M{30/4},{30/2} h{30/2} l{-30/4},{-30/2} Z" fill = {color(data[d[0]].sepal_length)} stroke = "#000"/>
-            </g>
+            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = "#F4B942" stroke = "#000" r = "5"/>
           {/if}
         {/if}
       {/each}
@@ -269,17 +259,16 @@
     y = -300
     style = "writing-mode: vertical-lr; transform: rotate(180deg);">Pedal Length</text>
     <g class = "legend" stroke = "#000">
-      <circle cx = 1000 cy = 100 fill = "#000" stroke = "#000" r = "13"/>
+      <text x = 1030 y = 58 font-size = 20>Legend</text>
+      <circle cx = 1000 cy = 100 fill = "#4059AD" stroke = "#000" r = "13"/>
       <text x = 1030 y = 108 font-size = 20>Iris-setosa</text>
-      <g transform = "translate(980, 150)">
-        <path d="M{40/4},{40/2} h{40/2} l{-40/4},{-40/2} Z" fill = "#000" stroke = "#000"/>
-      </g>
-      <rect width = 20 height = 20 x = 990 y = 215 fill ="#000"/>
+      <circle cx = 1000 cy = 150 fill = "#97D8C4" stroke = "#000" r = "13"/>
+      <text x = 1030 y = 158 font-size = 20>Iris-versicolor</text>
+      <circle cx = 1000 cy = 200 fill = "#F4B942" stroke = "#000" r = "13"/>
+      <text x = 1030 y = 208 font-size = 20>Iris-virginica</text>
     </g>
     <g class = "accuracy_score">
-      {#if show_true === false}
-        <text>Accuracy Score: {accuracy_score}%</text>
-      {/if}
+      <text>Accuracy Score: {accuracy_score}%</text>
     </g>
   </svg>
 </div>
@@ -300,13 +289,10 @@
 </div>
 
 <style>
-  circle {
+  .points {
     fill-opacity: 100%;
     stroke-opacity: 100%;
-  }
-  rect {
-    fill-opacity: 100%;
-    stroke-opacity: 100%;
+    filter: brightness(75%);
   }
   button {
     margin-bottom: 1em;
@@ -314,12 +300,7 @@
   .overlay {
     transform: translate(0, 70%);
   }
-  .points {
-    position: absolute;
-    z-index: 2;
-  }
   .boundary_lines {
-    position: absolute;
-    z-index: 1;
+    fill-opacity: 100%;
   }
 </style>
