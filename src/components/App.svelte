@@ -22,7 +22,14 @@
   </p>
   <p style = "padding:10px; text-align: left;">
     The goal of classification algorithms is to categorize unseen data based on the patterns seen within the training data. KNN is a type of classification algorithm that uses the distance 
-    between data points to classify new data. 
+    between data points to classify new data. Essentially, when you input a data point, KNN calculates the distance between that point and every other point in the dataset. Afterwards, it finds the 
+    k closest points and takes a majority vote by looking at the most common label between them. For example, if k is equal to 3, the algorithm will look for the 3 data points that 
+    have the shortest distance between them and the inputted data point then take a look at their labels and assign the most seen label to the inputted data point. 
+  </p>
+  <p style = "padding:10px; text-align: left;">
+    In this article, we will be using the Iris dataset to walk through the process and visualize KNN. The Iris dataset was created back in 1936 and is one of the oldest datasets used to demonstrate 
+    classification methods. This dataset consists of 5 columns: petal length, petal width, sepal length, sepal width, and class. The thing we are trying to predict whether a flower is of class Iris Setosa, Iris 
+    Versicolor, or Iris Virginica and we are going to either be using a combination of petal length and petal width or sepal length and sepal width in order to classify that flower.
   </p>
   <DataPoints {data}/>
   <p style = "padding:30px;">Write your HTML here</p>
