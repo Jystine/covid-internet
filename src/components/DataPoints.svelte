@@ -1,5 +1,6 @@
 <script>
     import * as d3 from "d3";
+    import KNN from "ml-knn";
     export let data
 
     const width = 928;
@@ -15,19 +16,35 @@
     let k = 3;
     let show_true = false;
     let button;
+    $: petal_features = create_petal_features(data);
+    $: sepal_features = create_sepal_features(data);
+    $: classes = create_classes(data);
+
+    $: knn = create_knn(petal_features, classes, k)
+
+    $: predicted = create_predictions(petal_features, knn);
+
+    $: data_class = features_prediction(predicted);
+
+    $: console.log(predicted);
+
     $: petal_width_max = d3.max(data, (d) => d.petal_width);
     $: petal_length_max = d3.max(data, (d) => d.petal_length);
     $: sepal_length_max = d3.max(data, (d) => d.sepal_length);
     $: sepal_width_max = d3.max(data, (d) => d.sepal_width);
-    $: petal_width_area = create_area(90, petal_width_max);
-    $: petal_length_area = create_area(90, petal_length_max);
+    $: petal_width_area = create_area(100, petal_width_max);
+    $: petal_length_area = create_area(100, petal_length_max);
     $: sepal_length_area = create_area(90, sepal_length_max);
     $: sepal_width_area = create_area(90, sepal_width_max);
     $: accuracy_score = accuracy(data, data_class)
     $: button_t = button_text(show_true);
-    $: data_class = classification(data, k);
+    // $: data_class = classification(data, k);
     $: slider_label = `k = ${k}`;
-    $: classified_area = classify_area(data, petal_width_area, petal_length_area, k)
+    // $: classified_area = classify_area(data, petal_width_area, petal_length_area, k)
+
+    $: classified_area = classify_boundaries(knn, petal_width_area, petal_length_area);
+
+    $: console.log(classified_area);
 
     $: x = d3
     .scaleLinear()
@@ -92,83 +109,151 @@
         }
       }
 
-      function classify_area(data, area1, area2, k) {
-        let result = {}
-        let distance;
-        let idx = 0;
-        for (let i = 0; i < area1.length; i++) {
-          for (let j = 0; j < area2.length; j++) {
-            let distance_dict = {}
-            let classes = {'Iris-virginica': 0, 'Iris-setosa': 0, "Iris-versicolor": 0};
-            let point = [area1[i], area2[j]]
-            for (let d = 0; d < data.length; d++) {
-              distance = Math.sqrt(((data[d].petal_width - point[0]) ** 2) + ((data[d].petal_length - point[1]) ** 2))
-              distance_dict[d] = distance;
-            }
-            var dist_items = Object.keys(distance_dict).map(function(key) {
-            return [key, distance_dict[key]];
-            });
-            dist_items.sort(function(first, second) {
-              return first[1] - second[1];
-            });
-            for (let n = 0; n < k; n++){
-            classes[data[dist_items[n][0]].class] = classes[data[dist_items[n][0]].class] + 1;
-            }
-            var class_items = Object.keys(classes).map(function(key) {
-              return [key, classes[key]];
-            });
-            class_items.sort(function(first, second) {
-              return second[1] - first[1];
-            });
-            result[idx] = {x: point[0], y: point[1], class: class_items[0][0]}
-            idx = idx + 1;
-          }
+      function create_petal_features(data) {
+        let petal_features = []
+        for (let i = 0; i < data.length; i++) {
+          let features = [data[i].petal_width, data[i].petal_length]
+          petal_features.push(features)
         }
-        var result_items =  Object.keys(result).map(function(key) {
-            return [key, result[key]];
-          });
-        return result_items;
+        return petal_features
       }
 
-      function classification(data, k) {
-        let result = {}
-        let distance;
+      function create_sepal_features(data) {
+        let sepal_features = [];
         for (let i = 0; i < data.length; i++) {
-          let distance_dict = {};
-          let classes = {'Iris-virginica': 0, 'Iris-setosa': 0, "Iris-versicolor": 0};
-          for (let j = 0; j < data.length; j++) {
-            if (i === j) {
-              continue;
-            } else {
-              distance = Math.sqrt(((data[i].petal_length - data[j].petal_length) ** 2) + ((data[i].petal_width - data[j].petal_width) ** 2))
-              distance_dict[j] = distance;
+          let features = [data[i].sepal_width, data[i].sepal_length]
+          sepal_features.push(features);
+        }
+        return sepal_features
+      }
+
+      function create_classes(data) {
+        let classes = [];
+        for (let i = 0; i < data.length; i++) {
+          classes.push(data[i].class)
+        }
+        return classes
+      }
+
+      function create_knn(training_data, classes, k) {
+        if (training_data.length !== 0) {
+          return new KNN(training_data, classes, {k: k})
+        }
+      }
+
+      function create_predictions(new_data, model) {
+        if (model !== undefined) {
+          return model.predict(new_data);
+        }
+      }
+
+      function features_prediction(predictions) {
+        let data_class = {}
+        if (predictions !== undefined) {
+          for (let i = 0; i < predictions.length; i++) {
+            data_class[i] = predictions[i]
+          }
+        }
+        var result =  Object.keys(data_class).map(function(key) {
+            return [key, data_class[key]];
+          });
+        return result;
+      }
+
+      function classify_boundaries(model, area1, area2) {
+        let result = {};
+        let idx = 0;
+        if (area1 !== undefined && area2 !== undefined && model !== undefined) {
+          for (let i = 0; i < area1.length; i++) {
+            for (let j = 0; j < area2.length; j++) {
+              let point = [area1[i], area2[j]]
+              result[idx] = {x: point[0], y: point[1], class: model.predict(point)}
+              idx = idx + 1;
             }
-          }
-          var dist_items = Object.keys(distance_dict).map(function(key) {
-            return [key, distance_dict[key]];
-          });
-          dist_items.sort(function(first, second) {
-            return first[1] - second[1];
-          });
-          for (let n = 0; n < k; n++){
-            classes[data[dist_items[n][0]].class] = classes[data[dist_items[n][0]].class] + 1;
-          }
-          var class_items = Object.keys(classes).map(function(key) {
-            return [key, classes[key]];
-          });
-          class_items.sort(function(first, second) {
-            return second[1] - first[1];
-          });
-          result[i] = class_items[0][0]
           }
           var result_items =  Object.keys(result).map(function(key) {
             return [key, result[key]];
           });
           return result_items;
+        }
       }
 
-      $: console.log(data_class);
-      $: console.log(classified_area);
+      // function classify_area(data, area1, area2, k) {
+      //   let result = {}
+      //   let distance;
+      //   let idx = 0;
+      //   for (let i = 0; i < area1.length; i++) {
+      //     for (let j = 0; j < area2.length; j++) {
+      //       let distance_dict = {}
+      //       let classes = {'Iris-virginica': 0, 'Iris-setosa': 0, "Iris-versicolor": 0};
+      //       let point = [area1[i], area2[j]]
+      //       for (let d = 0; d < data.length; d++) {
+      //         distance = Math.sqrt(((data[d].petal_width - point[0]) ** 2) + ((data[d].petal_length - point[1]) ** 2))
+      //         distance_dict[d] = distance;
+      //       }
+      //       var dist_items = Object.keys(distance_dict).map(function(key) {
+      //       return [key, distance_dict[key]];
+      //       });
+      //       dist_items.sort(function(first, second) {
+      //         return first[1] - second[1];
+      //       });
+      //       for (let n = 0; n < k; n++){
+      //       classes[data[dist_items[n][0]].class] = classes[data[dist_items[n][0]].class] + 1;
+      //       }
+      //       var class_items = Object.keys(classes).map(function(key) {
+      //         return [key, classes[key]];
+      //       });
+      //       class_items.sort(function(first, second) {
+      //         return second[1] - first[1];
+      //       });
+      //       result[idx] = {x: point[0], y: point[1], class: class_items[0][0]}
+      //       idx = idx + 1;
+      //     }
+      //   }
+      //   var result_items =  Object.keys(result).map(function(key) {
+      //       return [key, result[key]];
+      //     });
+      //   return result_items;
+      // }
+
+      // function classification(data, k) {
+      //   let result = {}
+      //   let distance;
+      //   for (let i = 0; i < data.length; i++) {
+      //     let distance_dict = {};
+      //     let classes = {'Iris-virginica': 0, 'Iris-setosa': 0, "Iris-versicolor": 0};
+      //     for (let j = 0; j < data.length; j++) {
+      //       if (i === j) {
+      //         continue;
+      //       } else {
+      //         distance = Math.sqrt(((data[i].petal_length - data[j].petal_length) ** 2) + ((data[i].petal_width - data[j].petal_width) ** 2))
+      //         distance_dict[j] = distance;
+      //       }
+      //     }
+      //     var dist_items = Object.keys(distance_dict).map(function(key) {
+      //       return [key, distance_dict[key]];
+      //     });
+      //     dist_items.sort(function(first, second) {
+      //       return first[1] - second[1];
+      //     });
+      //     for (let n = 0; n < k; n++){
+      //       classes[data[dist_items[n][0]].class] = classes[data[dist_items[n][0]].class] + 1;
+      //     }
+      //     var class_items = Object.keys(classes).map(function(key) {
+      //       return [key, classes[key]];
+      //     });
+      //     class_items.sort(function(first, second) {
+      //       return second[1] - first[1];
+      //     });
+      //     result[i] = class_items[0][0]
+      //     }
+      //     var result_items =  Object.keys(result).map(function(key) {
+      //       return [key, result[key]];
+      //     });
+      //     return result_items;
+      // }
+
+      $: console.log(data);
 
 </script>
 
@@ -222,7 +307,7 @@
     </g>
 
     <g class = "points" style = "position: absolute; z-index: 2;">
-    {#if data_class.length !== 0}
+    {#if data_class !== undefined}
       {#each data_class as d}
         {#if show_true == false}
           {#if d[1] === "Iris-setosa"}
@@ -299,8 +384,5 @@
   }
   .overlay {
     transform: translate(0, 70%);
-  }
-  .boundary_lines {
-    fill-opacity: 100%;
   }
 </style>
