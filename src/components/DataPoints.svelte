@@ -291,7 +291,7 @@
         }); -->
 
     <g class = "boundary_lines">
-    {#if classified_area.length !== 0}
+    {#if classified_area !== undefined}
       {#each classified_area as a}
         {#if a[1].class === "Iris-setosa"}
             <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#4059AD" r = "5"/>
