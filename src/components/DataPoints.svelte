@@ -16,17 +16,19 @@
     let k = 3;
     let show_true = false;
     let button;
+    let feature = "petals"
     $: petal_features = create_petal_features(data);
     $: sepal_features = create_sepal_features(data);
     $: classes = create_classes(data);
 
-    $: knn = create_knn(petal_features, classes, k)
+    $: petal_knn = create_knn(petal_features, classes, k)
+    $: sepal_knn = create_knn(sepal_features, classes, k)
 
-    $: predicted = create_predictions(petal_features, knn);
+    $: petal_predicted = create_predictions(petal_features, petal_knn);
+    $: sepal_predicted = create_predictions(sepal_features, sepal_knn)
 
-    $: data_class = features_prediction(predicted);
-
-    $: console.log(predicted);
+    $: petal_data_class = features_prediction(petal_predicted);
+    $: sepal_data_class = features_prediction(sepal_predicted)
 
     $: petal_width_max = d3.max(data, (d) => d.petal_width);
     $: petal_length_max = d3.max(data, (d) => d.petal_length);
@@ -34,31 +36,40 @@
     $: sepal_width_max = d3.max(data, (d) => d.sepal_width);
     $: petal_width_area = create_area(100, petal_width_max);
     $: petal_length_area = create_area(100, petal_length_max);
-    $: sepal_length_area = create_area(90, sepal_length_max);
-    $: sepal_width_area = create_area(90, sepal_width_max);
-    $: accuracy_score = accuracy(data, data_class)
+    $: sepal_length_area = create_area(100, sepal_length_max);
+    $: sepal_width_area = create_area(100, sepal_width_max);
+    $: accuracy_score = accuracy(data, petal_data_class)
     $: button_t = button_text(show_true);
     // $: data_class = classification(data, k);
     $: slider_label = `k = ${k}`;
     // $: classified_area = classify_area(data, petal_width_area, petal_length_area, k)
 
-    $: classified_area = classify_boundaries(knn, petal_width_area, petal_length_area);
+    $: classified_petal_area = classify_boundaries(petal_knn, petal_width_area, petal_length_area);
+    $: classified_sepal_area = classify_boundaries(sepal_knn, sepal_width_area, sepal_length_area);
 
-    $: console.log(classified_area);
+    $: console.log(sepal_width_max)
 
-    $: x = d3
+    $: petal_x = d3
     .scaleLinear()
     .domain([0, d3.max(data, (d) => d.petal_width)])
     .range([marginLeft, width - marginRight])
 
-    $: y = d3
+    $: petal_y = d3
     .scaleLinear()
     .domain([0, d3.max(data, (d) => d.petal_length)])
     .range([height - marginBottom, marginTop])
 
-    $: d3.select(gx).call(d3.axisBottom(x)) 
+    $: sepal_x = d3
+    .scaleLinear()
+    .domain([0, d3.max(data, (d) => d.sepal_width)])
+    .range([marginLeft, width - marginRight])
 
-    $: d3.select(gy).call(d3.axisLeft(y))
+    $: sepal_y = d3
+    .scaleLinear()
+    .domain([0, d3.max(data, (d) => d.sepal_length)])
+    .range([height - marginBottom, marginTop])
+
+    $: create_axis(feature, gx, gy, petal_x, petal_y, sepal_x, sepal_y);
 
     $: max = d3.max(data, (d) => Math.abs(d.sepal_length))
     $: min = d3.min(data, (d) => d.sepal_length)
@@ -148,6 +159,7 @@
       }
 
       function features_prediction(predictions) {
+        //Maps the data to the prediction
         let data_class = {}
         if (predictions !== undefined) {
           for (let i = 0; i < predictions.length; i++) {
@@ -175,6 +187,16 @@
             return [key, result[key]];
           });
           return result_items;
+        }
+      }
+
+      function create_axis(feature, gx, gy, petal_x, petal_y, sepal_x, sepal_y) {
+        if (feature === "petals") {
+          d3.select(gx).call(d3.axisBottom(petal_x))
+          d3.select(gy).call(d3.axisLeft(petal_y))
+        } else if (feature === "sepals") {
+          d3.select(gx).call(d3.axisBottom(sepal_x))
+          d3.select(gy).call(d3.axisLeft(sepal_y))
         }
       }
 
@@ -254,6 +276,7 @@
       // }
 
       $: console.log(data);
+      $: console.log(feature);
 
 </script>
 
@@ -291,44 +314,83 @@
         }); -->
 
     <g class = "boundary_lines">
-    {#if classified_area !== undefined}
-      {#each classified_area as a}
+    {#if classified_petal_area !== undefined && feature === "petals"}
+      {#each classified_petal_area as a}
         {#if a[1].class === "Iris-setosa"}
-            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#4059AD" r = "5"/>
+            <rect key = a[0] width = 10 height = 10 x = {petal_x(a[1].x)} y = {petal_y(a[1].y) - 10} fill = "#4059AD" r = "5"/>
         {/if}
         {#if a[1].class === "Iris-versicolor"}
-            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#97D8C4" r = "5"/>
+            <rect key = a[0] width = 10 height = 10 x = {petal_x(a[1].x)} y = {petal_y(a[1].y) - 10} fill = "#97D8C4" r = "5"/>
         {/if}
         {#if a[1].class === "Iris-virginica"}
-            <rect key = a[0] width = 10 height = 10 x = {x(a[1].x)} y = {y(a[1].y) - 10} fill = "#F4B942" r = "5"/>
+            <rect key = a[0] width = 10 height = 10 x = {petal_x(a[1].x)} y = {petal_y(a[1].y) - 10} fill = "#F4B942" r = "5"/>
+        {/if}
+      {/each}
+    {/if}
+    {#if classified_sepal_area !== undefined && feature === "sepals"}
+      {#each classified_sepal_area as a}
+        {#if a[1].class === "Iris-setosa"}
+            <rect key = a[0] width = 10 height = 10 x = {sepal_x(a[1].x)} y = {sepal_y(a[1].y) - 10} fill = "#4059AD" r = "5"/>
+        {/if}
+        {#if a[1].class === "Iris-versicolor"}
+            <rect key = a[0] width = 10 height = 10 x = {sepal_x(a[1].x)} y = {sepal_y(a[1].y) - 10} fill = "#97D8C4" r = "5"/>
+        {/if}
+        {#if a[1].class === "Iris-virginica"}
+            <rect key = a[0] width = 10 height = 10 x = {sepal_x(a[1].x)} y = {sepal_y(a[1].y) - 10} fill = "#F4B942" r = "5"/>
         {/if}
       {/each}
     {/if}
     </g>
 
     <g class = "points" style = "position: absolute; z-index: 2;">
-    {#if data_class !== undefined}
-      {#each data_class as d}
+    {#if petal_data_class !== undefined && feature === "petals"}
+      {#each petal_data_class as d}
         {#if show_true == false}
           {#if d[1] === "Iris-setosa"}
-            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = "#4059AD" stroke = "#000" r = "5"/>
+            <circle key = {d[0]} cx = {petal_x(data[d[0]].petal_width)} cy = {petal_y(data[d[0]].petal_length)} fill = "#4059AD" stroke = "#000" r = "5"/>
           {/if}
           {#if d[1] === "Iris-versicolor"}
-            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = "#97D8C4" stroke = "#000" r = "5"/>
+            <circle key = {d[0]} cx = {petal_x(data[d[0]].petal_width)} cy = {petal_y(data[d[0]].petal_length)} fill = "#97D8C4" stroke = "#000" r = "5"/>
           {/if}
           {#if d[1] === "Iris-virginica"}
-            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = "#F4B942" stroke = "#000" r = "5"/>
+            <circle key = {d[0]} cx = {petal_x(data[d[0]].petal_width)} cy = {petal_y(data[d[0]].petal_length)} fill = "#F4B942" stroke = "#000" r = "5"/>
           {/if}
         {/if}
         {#if show_true == true}
           {#if data[d[0]].class === "Iris-setosa"}
-            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = "#4059AD" stroke = "#000" r = "5"/>
+            <circle key = {d[0]} cx = {petal_x(data[d[0]].petal_width)} cy = {petal_y(data[d[0]].petal_length)} fill = "#4059AD" stroke = "#000" r = "5"/>
           {/if}
           {#if data[d[0]].class === "Iris-versicolor"}
-            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = "#97D8C4" stroke = "#000" r = "5"/>
+            <circle key = {d[0]} cx = {petal_x(data[d[0]].petal_width)} cy = {petal_y(data[d[0]].petal_length)} fill = "#97D8C4" stroke = "#000" r = "5"/>
           {/if}
           {#if data[d[0]].class === "Iris-virginica"}
-            <circle key = {d[0]} cx = {x(data[d[0]].petal_width)} cy = {y(data[d[0]].petal_length)} fill = "#F4B942" stroke = "#000" r = "5"/>
+            <circle key = {d[0]} cx = {petal_x(data[d[0]].petal_width)} cy = {petal_y(data[d[0]].petal_length)} fill = "#F4B942" stroke = "#000" r = "5"/>
+          {/if}
+        {/if}
+      {/each}
+    {/if}
+    {#if sepal_data_class !== undefined && feature === "sepals"}
+      {#each sepal_data_class as d}
+        {#if show_true == false}
+          {#if d[1] === "Iris-setosa"}
+            <circle key = {d[0]} cx = {sepal_x(data[d[0]].sepal_width)} cy = {sepal_y(data[d[0]].sepal_length)} fill = "#4059AD" stroke = "#000" r = "5"/>
+          {/if}
+          {#if d[1] === "Iris-versicolor"}
+            <circle key = {d[0]} cx = {sepal_x(data[d[0]].sepal_width)} cy = {sepal_y(data[d[0]].sepal_length)} fill = "#97D8C4" stroke = "#000" r = "5"/>
+          {/if}
+          {#if d[1] === "Iris-virginica"}
+            <circle key = {d[0]} cx = {sepal_x(data[d[0]].sepal_width)} cy = {sepal_y(data[d[0]].sepal_length)} fill = "#F4B942" stroke = "#000" r = "5"/>
+          {/if}
+        {/if}
+        {#if show_true == true}
+          {#if data[d[0]].class === "Iris-setosa"}
+            <circle key = {d[0]} cx = {sepal_x(data[d[0]].sepal_width)} cy = {sepal_y(data[d[0]].sepal_length)} fill = "#4059AD" stroke = "#000" r = "5"/>
+          {/if}
+          {#if data[d[0]].class === "Iris-versicolor"}
+            <circle key = {d[0]} cx = {sepal_x(data[d[0]].sepal_width)} cy = {sepal_y(data[d[0]].sepal_length)} fill = "#97D8C4" stroke = "#000" r = "5"/>
+          {/if}
+          {#if data[d[0]].class === "Iris-virginica"}
+            <circle key = {d[0]} cx = {sepal_x(data[d[0]].sepal_width)} cy = {sepal_y(data[d[0]].sepal_length)} fill = "#F4B942" stroke = "#000" r = "5"/>
           {/if}
         {/if}
       {/each}
@@ -357,6 +419,7 @@
     </g>
   </svg>
 </div>
+
 <div class = "overlay">
   <div class = "slider_class">
     <label>{slider_label}</label>
@@ -373,6 +436,14 @@
   </div>
 </div>
 
+<div class = "dropdown">
+  <label for = "features">Features:</label>
+  <select name = "features" id = "features" bind:value = {feature}>
+    <option value = "petals">Petals</option>
+    <option value = "sepals">Sepals</option>
+  </select>
+</div>
+
 <style>
   .points {
     fill-opacity: 100%;
@@ -384,5 +455,8 @@
   }
   .overlay {
     transform: translate(0, 70%);
+  }
+  .dropdown {
+    transform: translate(10%, 0);
   }
 </style>
