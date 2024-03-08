@@ -4,13 +4,36 @@
   import { onMount } from "svelte";
 
   let data = [];
+  let k = 3;
+  $: button_label = `k = ${k}`;
 
- onMount(async () => {
-            const res = await fetch('iris.csv'); 
+    onMount(async () => {
+            let res = await fetch('k_3.csv'); 
             const csv = await res.text();
             data = d3.csvParse(csv, d3.autoType)
             console.log(data);
         });
+
+    async function update_k3() {
+      const res = await fetch('k_3.csv');
+      const csv = await res.text();
+      data = d3.csvParse(csv, d3.autoType)
+      console.log(data);
+    }
+
+    async function update_k150() {
+      const res = await fetch('k_150.csv');
+      const csv = await res.text();
+      data = d3.csvParse(csv, d3.autoType)
+      console.log(data);
+    }
+
+    async function update_k1() {
+      const res = await fetch('k_1.csv');
+      const csv = await res.text();
+      data = d3.csvParse(csv, d3.autoType)
+      console.log(data);
+    }
 </script>
 
 <main>
@@ -29,9 +52,17 @@
   <p style = "padding:10px; text-align: left;">
     In this article, we will be using the Iris dataset to walk through the process and visualize KNN. The Iris dataset was created back in 1936 and is one of the oldest datasets used to demonstrate 
     classification methods. This dataset consists of 5 columns: petal length, petal width, sepal length, sepal width, and class. The thing we are trying to predict whether a flower is of class Iris Setosa, Iris 
-    Versicolor, or Iris Virginica and we are going to either be using a combination of petal length and petal width or sepal length and sepal width in order to classify that flower.
+    Versicolor, or Iris Virginica and we are going to be using a combination of petal length and petal width to classify that flower.
   </p>
   <DataPoints {data}/>
+  <div class = "k-button">
+    <button id = "button3" on:click = {update_k1} on:click = {() => k = 1} style = "margin: 10px"> 1 </button>
+    <button id = "button1" on:click = {update_k3} style = "margin: 10px"> 3 </button>
+    <button id = "button2" on:click = {update_k150} style = "margin: 10px"> 150 </button>
+  </div>
+  <div class = "label">
+    <label id = "label">{button_label}</label>
+  </div>
   <p style = "padding:30px;">Write your HTML here</p>
   <div class = "write-up">
     <h1 style = "text-align:center"><u>Write-Up</u></h1>
@@ -56,9 +87,24 @@
   main {
     text-align: center;
     font-family: 'Open Sans', sans-serif;
+    margin-left: 100px;
+    margin-right: 100px;
   }
   .write-up {
       text-align:left;
       padding: 10px;
     }
+  #button1, #button2, #button3 {
+    transform: translate(0, 150%);
+  }
+  #k-button{
+      text-align: center;
+  }
+  button:hover {
+    cursor: pointer;
+  }
+  .label {
+    transform: translate(0, 100%);
+    text-align: center;
+  }
 </style>
