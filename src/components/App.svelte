@@ -1,10 +1,12 @@
 <script>
   import * as d3 from "d3";
   import DataPoints from "./DataPoints.svelte";
+  import Iris from "./Iris.svelte";
   import { onMount } from "svelte";
 
   let data = [];
   let k = 3;
+  let iris_data = [];
   $: button_label = `k = ${k}`;
 
     onMount(async () => {
@@ -12,6 +14,13 @@
             const csv = await res.text();
             data = d3.csvParse(csv, d3.autoType)
             console.log(data);
+        });
+
+    onMount(async () => {
+            let res = await fetch('iris.csv'); 
+            const csv = await res.text();
+            iris_data = d3.csvParse(csv, d3.autoType)
+            console.log(iris_data);
         });
 
     async function update_k3() {
@@ -54,11 +63,15 @@
     classification methods. This dataset consists of 5 columns: petal length, petal width, sepal length, sepal width, and class. The thing we are trying to predict whether a flower is of class Iris Setosa, Iris 
     Versicolor, or Iris Virginica and we are going to be using a combination of petal length and petal width to classify that flower.
   </p>
-  <DataPoints {data}/>
+  <img src = "iris.png" alt = "chart not found">
+  <div class = "plot">
+    <Iris {iris_data}/>
+    <DataPoints {data}/>
+  </div>
   <div class = "k-button">
-    <button id = "button3" on:click = {update_k1} on:click = {() => k = 1} style = "margin: 10px"> 1 </button>
-    <button id = "button1" on:click = {update_k3} style = "margin: 10px"> 3 </button>
-    <button id = "button2" on:click = {update_k150} style = "margin: 10px"> 150 </button>
+    <button id = "button3" on:click = {update_k1} on:click = {() => k = 1}> 1 </button>
+    <button id = "button1" on:click = {update_k3} on:click = {() => k = 3}> 3 </button>
+    <button id = "button2" on:click = {update_k150} on:click = {() => k = 150}> 150 </button>
   </div>
   <div class = "label">
     <label id = "label">{button_label}</label>
@@ -96,6 +109,7 @@
     }
   #button1, #button2, #button3 {
     transform: translate(0, 150%);
+    width: 40px;
   }
   #k-button{
       text-align: center;
@@ -104,7 +118,7 @@
     cursor: pointer;
   }
   .label {
-    transform: translate(0, 100%);
+    transform: translate(0, 220%);
     text-align: center;
   }
 </style>
