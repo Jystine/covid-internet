@@ -2,47 +2,95 @@
   import * as d3 from "d3";
   import DataPoints from "./DataPoints.svelte";
   import Iris from "./Iris.svelte";
+  import WorstAcc from "./WorstAcc.svelte"
+  import BestAcc from "./BestAcc.svelte"
   import { onMount } from "svelte";
 
   let data = [];
+  let k_input;
   let k = 3;
   let iris_data = [];
+  let worst_acc = [];
+  let best_acc = [];
+  let path = "k_3.csv";
+  let button;
   $: button_label = `k = ${k}`;
+
+  $: console.log(path);
+
 
     onMount(async () => {
             let res = await fetch('k_3.csv'); 
             const csv = await res.text();
             data = d3.csvParse(csv, d3.autoType)
-            console.log(data);
         });
 
     onMount(async () => {
             let res = await fetch('iris.csv'); 
             const csv = await res.text();
             iris_data = d3.csvParse(csv, d3.autoType)
-            console.log(iris_data);
+        });
+
+    onMount(async () => {
+            let res = await fetch('k_150.csv'); 
+            const csv = await res.text();
+            worst_acc = d3.csvParse(csv, d3.autoType)
+        });
+
+    onMount(async () => {
+            let res = await fetch('k_1.csv'); 
+            const csv = await res.text();
+            best_acc = d3.csvParse(csv, d3.autoType)
         });
 
     async function update_k3() {
       const res = await fetch('k_3.csv');
       const csv = await res.text();
       data = d3.csvParse(csv, d3.autoType)
-      console.log(data);
     }
 
     async function update_k150() {
       const res = await fetch('k_150.csv');
       const csv = await res.text();
       data = d3.csvParse(csv, d3.autoType)
-      console.log(data);
     }
 
     async function update_k1() {
       const res = await fetch('k_1.csv');
       const csv = await res.text();
       data = d3.csvParse(csv, d3.autoType)
-      console.log(data);
     }
+
+    async function update(path) {
+      console.log(path);
+      const res = await fetch(path);
+      const csv = await res.text();
+      data = d3.csvParse(csv, d3.autoType)
+    }
+
+    function path_construction(input, path) {
+      if (input >= 1 && input <= 150) {
+        let string = String(input);
+        let first_part  = "k_"
+        let last_part = ".csv"
+        let result = first_part.concat(string, last_part)
+        return result;
+      } else {
+        return path
+      }
+    }
+
+    function determine_k(k_input) {
+      if (k_input === undefined) {
+        return 3;
+      } else if (k_input < 1 || k_input > 150){
+        return "Not valid k";
+      } else {
+        return k_input;
+      }
+    }
+
+    $: console.log(data);
 </script>
 
 <main>
@@ -64,10 +112,12 @@
     Versicolor, or Iris Virginica and we are going to be using a combination of petal length and petal width to classify that flower.
   </p>
   <img src = "iris.png" alt = "chart not found">
-  <div class = "plot">
+  <div class = "iris_plot">
     <Iris {iris_data}/>
-    <DataPoints {data}/>
   </div>
+    <WorstAcc {worst_acc} />
+    <BestAcc {best_acc} />
+    <DataPoints {data}/>
   <div class = "k-button">
     <button id = "button3" on:click = {update_k1} on:click = {() => k = 1}> 1 </button>
     <button id = "button1" on:click = {update_k3} on:click = {() => k = 3}> 3 </button>
@@ -75,6 +125,10 @@
   </div>
   <div class = "label">
     <label id = "label">{button_label}</label>
+  </div>
+  <div class = "input">
+    <input bind:value = {k_input} type = "text" id = "k" placeholder = "Insert values from 1-150" />
+    <button bind:this={button} on:click={() => {k = determine_k(k_input), path = path_construction(k_input, path), update(path)}}>Submit</button>
   </div>
   <p style = "padding:30px;">Write your HTML here</p>
   <div class = "write-up">
@@ -120,5 +174,11 @@
   .label {
     transform: translate(0, 220%);
     text-align: center;
+  }
+  .iris_plot {
+    margin: 50px;
+  }
+  .input {
+    transform: translate(0, 200%);
   }
 </style>

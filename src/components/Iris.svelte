@@ -25,7 +25,6 @@
 
   $: d3.select(gx).call(d3.axisBottom(x))
   $: d3.select(gy).call(d3.axisLeft(y))
-  $: console.log(iris_data)
 </script>
 
 <div class = "plot">
@@ -40,6 +39,20 @@
 
   <g bind:this = {gx} transform = "translate(0, {height - marginBottom})"/>
   <g bind:this = {gy} transform = "translate({marginLeft}, 0)"/>
+
+  {#if iris_data.length !== 0}
+    {#each iris_data as d, i}
+        {#if d.class === "Iris-setosa"}
+          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#4059AD" stroke = "#000" r = "5"/>
+        {/if}
+        {#if d.class === "Iris-versicolor"}
+          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#97D8C4" stroke = "#000" r = "5"/>
+        {/if}
+        {#if d.class === "Iris-virginica"}
+          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#F4B942" stroke = "#000" r = "5"/>
+        {/if}
+    {/each}
+  {/if}
 
   <text x = 420 
     y = 530 
