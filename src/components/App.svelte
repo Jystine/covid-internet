@@ -4,6 +4,7 @@
   import Iris from "./Iris.svelte";
   import WorstAcc from "./WorstAcc.svelte"
   import BestAcc from "./BestAcc.svelte"
+  import ModelBreak from "./ModelBreak.svelte";
   import { onMount } from "svelte";
 
   let data = [];
@@ -12,8 +13,10 @@
   let iris_data = [];
   let worst_acc = [];
   let best_acc = [];
+  let model_break = [];
   let path = "k_3.csv";
   let button;
+  let valid = true;
   $: button_label = `k = ${k}`;
 
   $: console.log(path);
@@ -23,24 +26,35 @@
             let res = await fetch('k_3.csv'); 
             const csv = await res.text();
             data = d3.csvParse(csv, d3.autoType)
+            console.log(data);
         });
 
     onMount(async () => {
             let res = await fetch('iris.csv'); 
             const csv = await res.text();
             iris_data = d3.csvParse(csv, d3.autoType)
+            console.log(iris_data);
         });
 
     onMount(async () => {
             let res = await fetch('k_150.csv'); 
             const csv = await res.text();
             worst_acc = d3.csvParse(csv, d3.autoType)
+            console.log(worst_acc);
         });
 
     onMount(async () => {
             let res = await fetch('k_1.csv'); 
             const csv = await res.text();
             best_acc = d3.csvParse(csv, d3.autoType)
+            console.log(best_acc);
+        });
+    
+    onMount(async () => {
+            let res = await fetch('k_100.csv'); 
+            const csv = await res.text();
+            model_break = d3.csvParse(csv, d3.autoType)
+            console.log(model_break);
         });
 
     async function update_k3() {
@@ -80,17 +94,28 @@
       }
     }
 
-    function determine_k(k_input) {
+    function determine_k(k_input, k) {
       if (k_input === undefined) {
         return 3;
       } else if (k_input < 1 || k_input > 150){
-        return "Not valid k";
+        return k;
       } else {
         return k_input;
       }
     }
 
+    function determine_valid(k_input) {
+      if (k_input !== undefined) {
+        if (k_input < 1 || k_input > 150) {
+          return false
+        } else if (k_input >= 1 && k_input <= 150) {
+          return true
+        }
+      }
+    }
+
     $: console.log(data);
+    $: console.log(valid);
 </script>
 
 <main>
@@ -116,23 +141,28 @@
     <Iris {iris_data}/>
   </div>
     <WorstAcc {worst_acc} />
+    <ModelBreak {model_break} />
     <BestAcc {best_acc} />
     <DataPoints {data}/>
-  <div class = "k-button">
+  <!-- <div class = "k-button">
     <button id = "button3" on:click = {update_k1} on:click = {() => k = 1}> 1 </button>
     <button id = "button1" on:click = {update_k3} on:click = {() => k = 3}> 3 </button>
     <button id = "button2" on:click = {update_k150} on:click = {() => k = 150}> 150 </button>
-  </div>
+  </div> -->
   <div class = "label">
     <label id = "label">{button_label}</label>
   </div>
   <div class = "input">
     <input bind:value = {k_input} type = "text" id = "k" placeholder = "Insert values from 1-150" />
-    <button bind:this={button} on:click={() => {k = determine_k(k_input), path = path_construction(k_input, path), update(path)}}>Submit</button>
+    <button bind:this={button} on:click={() => {k = determine_k(k_input, k), path = path_construction(k_input, path), valid = determine_valid(k_input), update(path)}}>Submit</button>
   </div>
-  <p style = "padding:30px;">Write your HTML here</p>
+  <div class = "valid">
+    {#if valid === false}
+      <p>Not a valid k</p>
+    {/if}
+  </div>
   <div class = "write-up">
-    <h1 style = "text-align:center"><u>Write-Up</u></h1>
+    <h1 style = "text-align:center; margin-top:100px"><u>Write-Up</u></h1>
     <p>We have visually encoded data points with different features. We also set up a legend and an introduction writeup for our website. For interactive visualization, 
       we have a working interactive that demonstrates the mechanisms of KNN algorithm in machine learning via tuning the hyperparameter k, the amount of nearest neighbors 
       that contributes to the vote of the classified category of a data point. We did this by drawing boundary lines between areas of different classes that correspond with 
@@ -161,13 +191,13 @@
       text-align:left;
       padding: 10px;
     }
-  #button1, #button2, #button3 {
+  /* #button1, #button2, #button3 {
     transform: translate(0, 150%);
     width: 40px;
   }
   #k-button{
       text-align: center;
-  }
+  } */
   button:hover {
     cursor: pointer;
   }
@@ -180,5 +210,9 @@
   }
   .input {
     transform: translate(0, 200%);
+  }
+  .valid {
+    transform: translate(0, 220%);
+    color: red;
   }
 </style>
