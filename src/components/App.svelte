@@ -140,16 +140,24 @@
   <div class = "iris_plot">
     <Iris {iris_data}/>
   </div>
+  <div class = "worst_acc">
     <WorstAcc {worst_acc} />
+  </div>
+  <div class = "model_break">
     <ModelBreak {model_break} />
+  </div>
+  <div class = "best_acc">
     <BestAcc {best_acc} />
+  </div>
+  <div class = "interaction">
     <DataPoints {data}/>
+  </div>
   <!-- <div class = "k-button">
     <button id = "button3" on:click = {update_k1} on:click = {() => k = 1}> 1 </button>
     <button id = "button1" on:click = {update_k3} on:click = {() => k = 3}> 3 </button>
     <button id = "button2" on:click = {update_k150} on:click = {() => k = 150}> 150 </button>
   </div> -->
-  <div class = "label">
+  <!-- <div class = "label">
     <label id = "label">{button_label}</label>
   </div>
   <div class = "input">
@@ -160,7 +168,7 @@
     {#if valid === false}
       <p>Not a valid k</p>
     {/if}
-  </div>
+  </div> -->
   <div class = "write-up">
     <h1 style = "text-align:center; margin-top:100px"><u>Write-Up</u></h1>
     <p>We have visually encoded data points with different features. We also set up a legend and an introduction writeup for our website. For interactive visualization, 
@@ -214,5 +222,10 @@
   .valid {
     transform: translate(0, 220%);
     color: red;
+    font-weight: bold;
   }
+  .worst_acc, .model_break, .best_acc, .interaction {
+    padding-bottom: 10px;
+    padding-top: 10px;
+  } 
 </style>

@@ -9,6 +9,11 @@
   const marginBottom = 20;
   const marginLeft = 40;
 
+  let k = 100;
+  $: button_label = `k = ${k}`;
+  let button99;
+  let button100;
+  
   let svg;
   let gx;
   let gy;
@@ -30,6 +35,18 @@
 
   $: d3.select(gx).call(d3.axisBottom(x))
   $: d3.select(gy).call(d3.axisLeft(y))
+
+  async function update_k100() {
+      const res = await fetch('k_100.csv');
+      const csv = await res.text();
+      model_break = d3.csvParse(csv, d3.autoType)
+    }
+
+    async function update_k99() {
+      const res = await fetch('k_99.csv');
+      const csv = await res.text();
+      model_break = d3.csvParse(csv, d3.autoType)
+    }
 
   function accuracy(data) {
     let correct = 0;
@@ -130,6 +147,13 @@
 </div>
 
 <div class = "overlay">
+  <div class = "label">
+    <label id = "label">{button_label}</label>
+  </div>
+  <div class = "k-button">
+    <button bind:this = {button99} id = "button99" on:click = {update_k99} on:click = {() => {k = 99}}> 99 </button>
+    <button bind:this = {button100} id = "button100" on:click = {update_k100} on:click = {() => {k = 100}}> 100 </button>
+  </div>
   <div class = "button">
     <button bind:this = {button} on:click = {() => {show_true = !show_true}} style = "margin: 10px">{button_t}</button>
   </div>
@@ -151,5 +175,15 @@
   }
   button:hover {
     cursor: pointer;
+  }
+  #button99, #button100 {
+    width: 40px;
+  }
+  .k-button {
+    transform: translate(0, 40%);
+    text-align: center;
+  }
+  .label {
+    transform: translate(0, 200%);
   }
 </style>
