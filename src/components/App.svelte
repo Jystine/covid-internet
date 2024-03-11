@@ -119,6 +119,18 @@
 </script>
 
 <main>
+  <div class='hook'>
+    <h1>The Importance of Moderation in Machine Learning</h1>
+    <p style = "padding:10px; text-align: center;">Han Hoang, Raine Hoang</p>
+  </div>
+  <div class='motivation'>
+    <h2>Our motivation</h2>
+    <!-- create a bullet list -->
+    <ul>
+      <li>Shows how a machine learning algorithm work</li>
+      <li>K-Nearest Neighbors suits our needs to visualize the entire learning of an algorithm in one view</li>
+  </div>
+  <!--
   <h1>KNN Machine Learning</h1>
   <p style = "padding:10px; text-align: left;">Within machine learning, there are 3 main subtypes. The first one is supervised learning, which involves using labeled data in order to making predictions. 
     In contrast, the second type of machine learning uses unlabeled data and is called unsupervised learning. Finally, the last type of machine learning is called reinforcement learning and consists 
@@ -136,15 +148,51 @@
     classification methods. This dataset consists of 5 columns: petal length, petal width, sepal length, sepal width, and class. The thing we are trying to predict whether a flower is of class Iris Setosa, Iris 
     Versicolor, or Iris Virginica and we are going to be using a combination of petal length and petal width to classify that flower.
   </p>
-  <img src = "iris.png" alt = "chart not found">
-  <div class = "iris_plot">
+  -->
+  <div class='intro'>
+    <h2>Brief Introduction to Machine Learning and K-Nearest Neighbors</h2>
+    <ul>
+      <li>Machine learning happens when an algorithm learns the pattern of the data and makes predictions based on what it learned.</li>
+      <li>K-Nearest Neighbors is a machine learning algorithm that learns patterns by drawing boundaries between groups of data of different classification.</li>
+      <li>Boundaries are determined by the classification of all data points.</li>
+      <li>In turn, a data point classification is determined by the major classification of its nearest k-size group of neighbors.</li>
+    </ul>
+  </div>
+
+  <div class='dataset'>
+    <h2>Our dataset</h2>
+    <ul>
+      <!-- include a link to UC Irvine Machine Learning Repository -->
+      <li>Sourced from <a href='https://archive.ics.uci.edu/dataset/53/iris'>UC Irvine Machine Learning Repository</a></li>
+      <li>Contains 150 data points</li>
+      <li>Contains 5 attributes: sepal length, sepal width, petal length, petal width, and class</li>
+      <li><b>Outcome variable</b>: class (Iris Setosa, Iris Versicolor, and Iris Virginica)</li>
+      <li><b>Predictors</b>: petal width and petal length</li>
+    </ul>
+    <img src = "iris.png" alt = "chart not found">
+  </div>
+
+  <div class = "actual_plot">
+    <h2>Data Visualization of All Data Points with Their Actual Class</h2>
+    <p><b>Note</b>: There are equally 50 points for each class.</p>
     <Iris {iris_data}/>
   </div>
+
   <div class = "worst_acc">
-    <WorstAcc {worst_acc} />
+    <h2>Worst Accuracy When k = 150</h2>
+    <li>Dataset size is 150, creating an extreme case of underfit because there is no point of reference for any individual class nomination.</li>
+    <li>First class appeared in the dataset is chosen to be the classification of all points as last resort.</li>
+    <div class='worst_acc_plot'>
+      <WorstAcc {worst_acc} />
+    </div>
   </div>
-  <div class = "model_break">
-    <ModelBreak {model_break} />
+  <div class = "generalized">
+    <h2>Generalized When k = 99</h2>
+    <li>KNN generalizes the data when k is in the middle range.</li>
+    <li>Errors made with misclassified data points when the model is generalized are generally forgivable because those points are typically borderline between 2 classes. One flower may very well be of another type if we have a slightly different dataset.</li>
+    <div class='generalized_plot'>
+      <WorstAcc {model_break} />
+    </div>
   </div>
   <div class = "best_acc">
     <BestAcc {best_acc} />
@@ -169,6 +217,7 @@
       <p>Not a valid k</p>
     {/if}
   </div> -->
+  <!--
   <div class = "write-up">
     <h1 style = "text-align:center; margin-top:100px"><u>Write-Up</u></h1>
     <p>We have visually encoded data points with different features. We also set up a legend and an introduction writeup for our website. For interactive visualization, 
@@ -186,6 +235,7 @@
       more smooth.
     </p>
   </div>
+  -->
 </main>
 
 <style>
@@ -228,4 +278,50 @@
     padding-bottom: 10px;
     padding-top: 10px;
   } 
+
+  .hook {
+    text-align: center;
+    padding-top: 250px;
+    padding-bottom: 500px;
+  }
+
+  .motivation {
+    text-align: left;
+    padding-bottom: 500px;
+  }
+
+  .intro {
+    text-align: left;
+    padding-bottom: 500px;
+  }
+
+  .dataset {
+    text-align: left;
+    padding-bottom: 500px;
+  }
+
+  .actual_plot {
+    text-align: left;
+    padding-bottom: 500px;
+  }
+
+  .worst_acc {
+    text-align: left;
+    padding-bottom: 500px;
+  }
+
+  .worst_acc_plot {
+    padding: 30px;
+    text-align: center;
+  }
+
+  .generalized {
+    text-align: left;
+    padding-bottom: 500px;
+  }
+
+  .generalized_plot {
+    padding: 30px;
+    text-align: center;
+  }
 </style>
