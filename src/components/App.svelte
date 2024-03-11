@@ -127,8 +127,8 @@
     <h2>Our motivation</h2>
     <!-- create a bullet list -->
     <ul>
-      <li>Shows how a machine learning algorithm work</li>
-      <li>K-Nearest Neighbors suits our needs to visualize the entire learning of an algorithm in one view</li>
+      <li style='padding-bottom:10px'>Shows how a machine learning algorithm work</li>
+      <li style='padding-bottom:10px'>K-Nearest Neighbors suits our needs to visualize the entire learning of an algorithm in one view</li>
   </div>
   <!--
   <h1>KNN Machine Learning</h1>
