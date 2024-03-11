@@ -152,10 +152,10 @@
   <div class='intro'>
     <h2>Brief Introduction to Machine Learning and K-Nearest Neighbors</h2>
     <ul>
-      <li>Machine learning happens when an algorithm learns the pattern of the data and makes predictions based on what it learned.</li>
-      <li>K-Nearest Neighbors is a machine learning algorithm that learns patterns by drawing boundaries between groups of data of different classification.</li>
-      <li>Boundaries are determined by the classification of all data points.</li>
-      <li>In turn, a data point classification is determined by the major classification of its nearest k-size group of neighbors.</li>
+      <li style='padding-bottom:10px'>Machine learning happens when an algorithm learns the pattern of the data and makes predictions based on what it learned.</li>
+      <li style='padding-bottom:10px'>K-Nearest Neighbors is a machine learning algorithm that learns patterns by drawing boundaries between groups of data of different classification.</li>
+      <li style='padding-bottom:10px'>Boundaries are determined by the classification of all data points.</li>
+      <li style='padding-bottom:10px'>In turn, a data point classification is determined by the major classification of its nearest k-size group of neighbors.</li>
     </ul>
   </div>
 
@@ -163,11 +163,11 @@
     <h2>Our dataset</h2>
     <ul>
       <!-- include a link to UC Irvine Machine Learning Repository -->
-      <li>Sourced from <a href='https://archive.ics.uci.edu/dataset/53/iris'>UC Irvine Machine Learning Repository</a></li>
-      <li>Contains 150 data points</li>
-      <li>Contains 5 attributes: sepal length, sepal width, petal length, petal width, and class</li>
-      <li><b>Outcome variable</b>: class (Iris Setosa, Iris Versicolor, and Iris Virginica)</li>
-      <li><b>Predictors</b>: petal width and petal length</li>
+      <li style='padding-bottom:10px'>Sourced from <a href='https://archive.ics.uci.edu/dataset/53/iris'>UC Irvine Machine Learning Repository</a></li>
+      <li style='padding-bottom:10px'>Contains 150 data points</li>
+      <li style='padding-bottom:10px'>Contains 5 attributes: sepal length, sepal width, petal length, petal width, and class</li>
+      <li style='padding-bottom:10px'><b>Outcome variable</b>: class (Iris Setosa, Iris Versicolor, and Iris Virginica)</li>
+      <li style='padding-bottom:10px'><b>Predictors</b>: petal width and petal length</li>
     </ul>
     <img src = "iris.png" alt = "chart not found">
   </div>
@@ -180,25 +180,40 @@
 
   <div class = "worst_acc">
     <h2>Worst Accuracy When k = 150</h2>
-    <li>Dataset size is 150, creating an extreme case of underfit because there is no point of reference for any individual class nomination.</li>
-    <li>First class appeared in the dataset is chosen to be the classification of all points as last resort.</li>
+    <li style='padding-bottom:10px'>Dataset size is 150, creating an extreme case of underfit because there is no point of reference for any individual class nomination.</li>
+    <li style='padding-bottom:10px'>First class appeared in the dataset is chosen to be the classification of all points as last resort.</li>
     <div class='worst_acc_plot'>
       <WorstAcc {worst_acc} />
     </div>
   </div>
+  <div class = "best_acc">
+    <h2>Best Accuracy When k = 1</h2>
+    <li style='padding-bottom:10px'>A data point can only reference itself for classification, creating an extreme case of overfit.</li>
+    <li style='padding-bottom:10px'>For every data point, actual classification = predicted classification</li>
+    <div class='best_acc_plot'>
+      <BestAcc {best_acc} />
+    </div>
+  </div>
   <div class = "generalized">
     <h2>Generalized When k = 99</h2>
-    <li>KNN generalizes the data when k is in the middle range.</li>
-    <li>Errors made with misclassified data points when the model is generalized are generally forgivable because those points are typically borderline between 2 classes. One flower may very well be of another type if we have a slightly different dataset.</li>
+    <li style='padding-bottom:10px'>KNN generalizes the data when k is in the middle range.</li>
+    <li style='padding-bottom:10px'>Errors made with misclassified data points when the model is generalized are generally forgivable because those points are typically borderline between 2 classes. One flower may very well be of another type if we have a slightly different dataset.</li>
     <div class='generalized_plot'>
       <ModelBreak {model_break} />
     </div>
   </div>
-  <div class = "best_acc">
-    <BestAcc {best_acc} />
-  </div>
   <div class = "interaction">
-    <DataPoints {data}/>
+    <h2>Try It Out For Yourself</h2>
+    <div class='interaction_plot'>
+      <DataPoints {data}/>
+    </div>
+  </div>
+  <div class='summary'>
+    <h2>Takeaways</h2>
+    <li style='padding-bottom:10px'>Low k values overfit</li>
+    <li style='padding-bottom:10px'>High k values underfit</li>
+    <li style='padding-bottom:10px'>Generalized when k is not too low or too high</li>
+    <li style='padding-bottom:10px'>Best accuracy score != best model</li>
   </div>
   <!-- <div class = "k-button">
     <button id = "button3" on:click = {update_k1} on:click = {() => k = 1}> 1 </button>
@@ -323,5 +338,30 @@
   .generalized_plot {
     padding: 30px;
     text-align: center;
+  }
+
+  .best_acc {
+    text-align: left;
+    padding-bottom: 500px;
+  }
+
+  .best_acc_plot {
+    padding: 30px;
+    text-align: center;
+  }
+
+  .interaction {
+    text-align: left;
+    padding-bottom: 500px;
+  }
+
+  .interaction_plot {
+    padding: 30px;
+    text-align: center;
+  }
+
+  .summary {
+    text-align: left;
+    padding-bottom: 500px;
   }
 </style>
