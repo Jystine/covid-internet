@@ -51,7 +51,7 @@
         });
     
     onMount(async () => {
-            let res = await fetch('k_100.csv'); 
+            let res = await fetch('k_99.csv'); 
             const csv = await res.text();
             model_break = d3.csvParse(csv, d3.autoType)
             console.log(model_break);
