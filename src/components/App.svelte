@@ -191,7 +191,7 @@
     <li>KNN generalizes the data when k is in the middle range.</li>
     <li>Errors made with misclassified data points when the model is generalized are generally forgivable because those points are typically borderline between 2 classes. One flower may very well be of another type if we have a slightly different dataset.</li>
     <div class='generalized_plot'>
-      <WorstAcc {model_break} />
+      <ModelBreak {model_break} />
     </div>
   </div>
   <div class = "best_acc">
