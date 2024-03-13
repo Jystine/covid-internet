@@ -52,6 +52,14 @@
   }
 </script>
 
+<!-- <div class = "bullet_points" style = "text-align: left; transform: translate(0, -30%)">
+  <div class = "best_acc">
+      <h2 class="text-2xl font-extrabold dark:text-white" style = "padding: 10px;"> Best Accuracy When k = 1</h2>
+      <li style='padding-bottom:10px'>A data point can only reference itself for classification, creating an extreme case of overfit.</li>
+      <li style='padding-bottom:10px'>For every data point, actual classification = predicted classification</li>
+  </div>
+</div> -->
+
 <div class = "plot">
   <svg
       bind:this = {svg}
@@ -130,12 +138,21 @@
 </div>
 
 <div class = "overlay">
-  <div class = "button">
-    <button bind:this = {button} on:click = {() => {show_true = !show_true}} style = "margin: 10px">{button_t}</button>
+  <div style = "transform: translate(-16.5%, -40%)">
+    <button bind:this = {button} on:click = {() => {show_true = !show_true}} style = "margin: 10px" 
+      class = "
+      bg-white 
+      hover:bg-gray-100 
+      text-gray-800 
+      font-semibold py-2 px-4 border 
+      border-gray-400 rounded shadow"
+      >
+      {button_t}
+    </button>
   </div>
 </div>
 
-<style>
+<style lang="postcss">
   rect {
     position: relative;
     z-index: 6;

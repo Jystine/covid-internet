@@ -130,12 +130,21 @@
 </div>
 
 <div class = "overlay">
-  <div class = "button">
-    <button bind:this = {button} on:click = {() => {show_true = !show_true}} style = "margin: 10px">{button_t}</button>
+   <div style = "transform: translate(-16.5%, -40%)">
+    <button bind:this = {button} on:click = {() => {show_true = !show_true}} style = "margin: 10px" 
+      class = "
+      bg-white 
+      hover:bg-gray-100 
+      text-gray-800 
+      font-semibold py-2 px-4 border 
+      border-gray-400 rounded shadow"
+      >
+      {button_t}
+    </button>
   </div>
 </div>
 
-<style>
+<style lang="postcss">
   rect {
     position: relative;
     z-index: 6;
