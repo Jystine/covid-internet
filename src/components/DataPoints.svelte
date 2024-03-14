@@ -179,25 +179,50 @@
 </div>
 
 
-<div class = "overlay">
-  <div class = "label">
+
+  <div class = "label" style = "transform: translate(-16.5%, 150%)">
     <label id = "label">{button_label}</label>
   </div>
-  <div class = "input">
-    <input class = "textbox" bind:value = {k_input} type = "text" id = "k" placeholder = "Insert values from 1-150" />
-    <button bind:this={button2} on:click={() => {k = determine_k(k_input, k), path = path_construction(k_input, path), valid = determine_valid(k_input), update(path)}}>Classify</button>
-  </div>
-  <div class = "button">
-    <button bind:this = {button1} on:click = {() => {show_true = !show_true}} style = "margin: 10px">{button_t}</button>
-  </div>
-  <div class = "valid">
+  <div id = "input-box" class = "w-full md:w-1/4 px-3" style = "transform: translate(80%, 120%)">
+    <input class = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" bind:value = {k_input} type = "text" id = "k" placeholder = "Insert values from 1-150" />
+    <!-- {#if valid === true}
+    <input class = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" bind:value = {k_input} type = "text" id = "k" placeholder = "Insert values from 1-150" />
+    {/if}
     {#if valid === false}
-      <p>Not a valid k</p>
+    <input type="text" id="error" bind:value = {k_input} 
+    class="bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
+    placeholder="Error input">
+    {/if} -->
+  </div>
+  <div id = "classify_button" style = "transform: translate(-16.5%, 140%)">
+      <button bind:this={button2} class = "
+        bg-white 
+        hover:bg-gray-100 
+         text-gray-800 
+        font-semibold py-2 px-4 border 
+        border-gray-400 rounded shadow
+        "
+        on:click={() => {k = determine_k(k_input, k), path = path_construction(k_input, path), valid = determine_valid(k_input), update(path)}}>Classify</button>
+    </div>
+   <div style = "transform: translate(-16.5%, 100%)">
+    <button bind:this = {button1} on:click = {() => {show_true = !show_true}} style = "margin: 10px" 
+      class = "
+      bg-white 
+      hover:bg-gray-100 
+      text-gray-800 
+      font-semibold py-2 px-4 border 
+      border-gray-400 rounded shadow"
+      >
+      {button_t}
+    </button>
+  </div>
+  <div id = "valid">
+    {#if valid === false}
+      <p class = "text-red-500 text-l italic" style = "transform: translate(0, -350%)">Not a valid k</p>
     {/if}
   </div>
-</div>
 
-<style>
+<!-- <style>
   rect {
     position: relative;
     z-index: 6;
@@ -231,4 +256,4 @@
     color: red;
     font-weight: bold;
   }
-</style>
+</style> -->

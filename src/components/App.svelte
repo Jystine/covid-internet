@@ -8,19 +8,12 @@
   import { onMount } from "svelte";
 
   let data = [];
-  let k_input;
-  let k = 3;
   let iris_data = [];
   let worst_acc = [];
   let best_acc = [];
   let model_break = [];
-  let path = "k_3.csv";
   let button;
-  let valid = true;
-  $: button_label = `k = ${k}`;
-
-  $: console.log(path);
-
+  let slide_position = 0;
 
     onMount(async () => {
             let res = await fetch('k_3.csv'); 
@@ -56,80 +49,51 @@
             model_break = d3.csvParse(csv, d3.autoType)
             console.log(model_break);
         });
-
-    async function update_k3() {
-      const res = await fetch('k_3.csv');
-      const csv = await res.text();
-      data = d3.csvParse(csv, d3.autoType)
-    }
-
-    async function update_k150() {
-      const res = await fetch('k_150.csv');
-      const csv = await res.text();
-      data = d3.csvParse(csv, d3.autoType)
-    }
-
-    async function update_k1() {
-      const res = await fetch('k_1.csv');
-      const csv = await res.text();
-      data = d3.csvParse(csv, d3.autoType)
-    }
-
-    async function update(path) {
-      console.log(path);
-      const res = await fetch(path);
-      const csv = await res.text();
-      data = d3.csvParse(csv, d3.autoType)
-    }
-
-    function path_construction(input, path) {
-      if (input >= 1 && input <= 150) {
-        let string = String(input);
-        let first_part  = "k_"
-        let last_part = ".csv"
-        let result = first_part.concat(string, last_part)
-        return result;
-      } else {
-        return path
-      }
-    }
-
-    function determine_k(k_input, k) {
-      if (k_input === undefined) {
-        return 3;
-      } else if (k_input < 1 || k_input > 150){
-        return k;
-      } else {
-        return k_input;
-      }
-    }
-
-    function determine_valid(k_input) {
-      if (k_input !== undefined) {
-        if (k_input < 1 || k_input > 150) {
-          return false
-        } else if (k_input >= 1 && k_input <= 150) {
-          return true
-        }
-      }
-    }
+      
+      function updateComponent(idx) {
+      };
 
     $: console.log(data);
-    $: console.log(valid);
 </script>
 
 <main>
-  <div class='hook'>
-    <h1>The Importance of Moderation in Machine Learning</h1>
-    <p style = "padding:10px; text-align: center;">Han Hoang, Raine Hoang</p>
+  <div id = "slide_buttons">
+    {#if slide_position !== 0}
+    <button id = "prev" class = "
+      bg-white 
+      hover:bg-gray-100 
+      text-gray-800 
+      font-semibold py-2 px-4 border 
+      border-gray-400 rounded shadow"
+      style = "transform: translate(-700%, 2000%)"
+      on:click = {() => slide_position = slide_position - 1}> Previous </button>
+    {/if}
+    {#if slide_position !== 9}
+    <button id = "next" class = "
+      bg-white 
+      hover:bg-gray-100 
+      text-gray-800 
+      font-semibold py-2 px-4 border 
+      border-gray-400 rounded shadow"
+      style = "transform: translate(1000%, 2000%)"
+      on:click = {() => slide_position = slide_position + 1}> Next </button>
+    {/if}
   </div>
-  <div class='motivation'>
-    <h2>Our motivation</h2>
-    <!-- create a bullet list -->
-    <ul>
-      <li style = "padding:10px">Shows how a machine learning algorithm work</li>
-      <li style = "padding:10px">K-Nearest Neighbors suits our needs to visualize the entire learning of an algorithm in one view</li>
-  </div>
+  {#if slide_position === 0}
+    <div class='hook'>
+      <h1 class="text-2xl font-extrabold dark:text-white" style = "text-align: center; transform: translate(0, -30%)">The Importance of Moderation in Machine Learning</h1>
+      <p style = "padding:10px; text-align: center;">Han Hoang, Raine Hoang</p>
+    </div>
+  {/if}
+  {#if slide_position === 1}
+    <div class='motivation'>
+      <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Our motivation</h2>
+      <!-- create a bullet list -->
+      <ul>
+        <li style='padding-bottom:10px'>Shows how a machine learning algorithm work</li>
+        <li style='padding-bottom:10px'>K-Nearest Neighbors suits our needs to visualize the entire learning of an algorithm in one view</li>
+    </div>
+  {/if}
   <!--
   <h1>KNN Machine Learning</h1>
   <p style = "padding:10px; text-align: left;">Within machine learning, there are 3 main subtypes. The first one is supervised learning, which involves using labeled data in order to making predictions. 
@@ -149,8 +113,9 @@
     Versicolor, or Iris Virginica and we are going to be using a combination of petal length and petal width to classify that flower.
   </p>
   -->
+  {#if slide_position === 2}
   <div class='intro'>
-    <h2>Brief Introduction to Machine Learning and K-Nearest Neighbors</h2>
+    <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Brief Introduction to Machine Learning and K-Nearest Neighbors</h2>
     <ul>
       <li style='padding-bottom:10px'>Machine learning happens when an algorithm learns the pattern of the data and makes predictions based on what it learned.</li>
       <li style='padding-bottom:10px'>K-Nearest Neighbors is a machine learning algorithm that learns patterns by drawing boundaries between groups of data of different classification.</li>
@@ -158,9 +123,11 @@
       <li style='padding-bottom:10px'>In turn, a data point classification is determined by the major classification of its nearest k-size group of neighbors.</li>
     </ul>
   </div>
+  {/if}
 
+  {#if slide_position === 3}
   <div class='dataset'>
-    <h2>Our dataset</h2>
+    <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Our dataset</h2>
     <ul>
       <!-- include a link to UC Irvine Machine Learning Repository -->
       <li style='padding-bottom:10px'>Sourced from <a href='https://archive.ics.uci.edu/dataset/53/iris'>UC Irvine Machine Learning Repository</a></li>
@@ -171,43 +138,59 @@
     </ul>
     <img src = "iris.png" alt = "chart not found">
   </div>
+  {/if}
 
+  {#if slide_position === 4}
   <div class = "actual_plot">
-    <h2>Data Visualization of All Data Points with Their Actual Class</h2>
+    <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Data Visualization of All Data Points with Their Actual Class</h2>
     <p><b>Note</b>: There are equally 50 points for each class.</p>
     <Iris {iris_data}/>
   </div>
+  {/if}
 
+  {#if slide_position === 5}
   <div class = "worst_acc">
-    <h2>Worst Accuracy When k = 150</h2>
+    <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Worst Accuracy When k = 150</h2>
     <li style='padding-bottom:10px'>Dataset size is 150, creating an extreme case of underfit because there is no point of reference for any individual class nomination.</li>
     <li style='padding-bottom:10px'>First class appeared in the dataset is chosen to be the classification of all points as last resort.</li>
     <div class='worst_acc_plot'>
       <WorstAcc {worst_acc} />
     </div>
   </div>
+  {/if}
+
+  {#if slide_position === 6}
   <div class = "best_acc">
-    <h2>Best Accuracy When k = 1</h2>
+    <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)"> Best Accuracy When k = 1</h2>
     <li style='padding-bottom:10px'>A data point can only reference itself for classification, creating an extreme case of overfit.</li>
     <li style='padding-bottom:10px'>For every data point, actual classification = predicted classification</li>
     <div class='best_acc_plot'>
       <BestAcc {best_acc} />
     </div>
   </div>
+  {/if}
+
+  {#if slide_position === 7}
   <div class = "generalized">
-    <h2>Generalized When k = 99</h2>
+    <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Generalized When k = 99</h2>
     <li style='padding-bottom:10px'>KNN generalizes the data when k is in the middle range.</li>
     <li style='padding-bottom:10px'>Errors made with misclassified data points when the model is generalized are generally forgivable because those points are typically borderline between 2 classes. One flower may very well be of another type if we have a slightly different dataset.</li>
     <div class='generalized_plot'>
       <ModelBreak {model_break} />
     </div>
   </div>
+  {/if}
+
+  {#if slide_position === 8}
   <div class = "interaction">
-    <h2>Try It Out For Yourself</h2>
+    <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Try It Out For Yourself</h2>
     <div class='interaction_plot'>
       <DataPoints {data}/>
     </div>
   </div>
+  {/if}
+
+  {#if slide_position === 9}
   <div class='summary'>
     <h2>Takeaways</h2>
     <li style='padding-bottom:10px'>Low k values overfit</li>
@@ -215,6 +198,7 @@
     <li style='padding-bottom:10px'>Generalized when k is not too low or too high</li>
     <li style='padding-bottom:10px'>Best accuracy score != best model</li>
   </div>
+  {/if}
   <!-- <div class = "k-button">
     <button id = "button3" on:click = {update_k1} on:click = {() => k = 1}> 1 </button>
     <button id = "button1" on:click = {update_k3} on:click = {() => k = 3}> 3 </button>
