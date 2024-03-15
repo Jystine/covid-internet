@@ -147,7 +147,7 @@
     <Iris {iris_data}/>
   </div>
   {/if}
-
+<!-- 
   {#if slide_position === 5}
   <div class = "worst_acc">
     <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Worst Accuracy When k = 150</h2>
@@ -178,9 +178,9 @@
       </div>
     </div>
   </div>
-  {/if}
+  {/if} -->
 
-  {#if slide_position === 7}
+  {#if slide_position === 5}
   <div class = "grid grid-cols-3 gap-4">
     <div id = "worst_acc_title">
       <h2 class="text-2xl font-extrabold dark:text-white">Worst Accuracy When k = 150</h2>
@@ -249,7 +249,7 @@
   </div>
   {/if}
 
-  {#if slide_position === 8}
+  {#if slide_position === 6}
   <div class = "interaction">
     <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Try It Out For Yourself</h2>
     <div class='interaction_plot'>
@@ -258,7 +258,7 @@
   </div>
   {/if}
 
-  {#if slide_position === 9}
+  {#if slide_position === 7}
   <div class='summary'>
     <h2>Takeaways</h2>
     <li style='padding-bottom:10px'>Low k values overfit</li>
