@@ -65,7 +65,7 @@
       text-gray-800 
       font-semibold py-2 px-4 border 
       border-gray-400 rounded shadow"
-      style = "transform: translate(-700%, 2000%)"
+      style = "transform: translate(-650%, 1600%)"
       on:click = {() => slide_position = slide_position - 1}> Previous </button>
     {/if}
     {#if slide_position !== 9}
@@ -75,7 +75,7 @@
       text-gray-800 
       font-semibold py-2 px-4 border 
       border-gray-400 rounded shadow"
-      style = "transform: translate(1000%, 2000%)"
+      style = "transform: translate(1000%, 1600%)"
       on:click = {() => slide_position = slide_position + 1}> Next </button>
     {/if}
   </div>
@@ -147,7 +147,7 @@
     <Iris {iris_data}/>
   </div>
   {/if}
-
+<!-- 
   {#if slide_position === 5}
   <div class = "worst_acc">
     <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Worst Accuracy When k = 150</h2>
@@ -160,28 +160,96 @@
   {/if}
 
   {#if slide_position === 6}
-  <div class = "best_acc">
-    <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)"> Best Accuracy When k = 1</h2>
-    <li style='padding-bottom:10px'>A data point can only reference itself for classification, creating an extreme case of overfit.</li>
-    <li style='padding-bottom:10px'>For every data point, actual classification = predicted classification</li>
-    <div class='best_acc_plot'>
+  <div class = "grid grid-cols-2 gap-4">
+    <div id = "worst_acc">
+      <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Worst Accuracy When k = 150</h2>
+      <li class = "text-left scroll-pb-2">Dataset size is 150, creating an extreme case of underfit because there is no point of reference for any individual class nomination.</li>
+      <li class = "text-left scroll-pb-2">First class appeared in the dataset is chosen to be the classification of all points as last resort.</li>
+      <div id='worst_acc_plot' class = "scroll-pb-2">
+        <WorstAcc {worst_acc} />
+      </div>
+    </div>
+    <div id = "best_acc">
+      <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)"> Best Accuracy When k = 1</h2>
+      <li style='padding-bottom:10px'>A data point can only reference itself for classification, creating an extreme case of overfit.</li>
+      <li style='padding-bottom:10px'>For every data point, actual classification = predicted classification</li>
+      <div class='best_acc_plot'>
+        <BestAcc {best_acc} />
+      </div>
+    </div>
+  </div>
+  {/if} -->
+
+  {#if slide_position === 5}
+  <div class = "grid grid-cols-3 gap-4">
+    <div id = "worst_acc_title">
+      <h2 class="text-2xl font-extrabold dark:text-white">Worst Accuracy When k = 150</h2>
+    </div>
+
+    <div id = "best_acc_title">
+      <h2 class="text-2xl font-extrabold dark:text-white"> Best Accuracy When k = 1</h2>
+    </div>
+
+    <div id = "generalized_title">
+      <h2 class="text-2xl font-extrabold dark:text-white">Generalized When k = 99</h2>
+    </div>
+
+    <div id = "worst_acc_text">
+      <li style='padding-bottom:10px'>Dataset size is 150, creating an extreme case of underfit because there is no point of reference for any individual class nomination.</li>
+      <li style='padding-bottom:10px'>First class appeared in the dataset is chosen to be the classification of all points as last resort.</li> 
+    </div>
+
+    <div id = "best_acc_text">
+      <li style='padding-bottom:10px'>A data point can only reference itself for classification, creating an extreme case of overfit.</li>
+      <li style='padding-bottom:10px'>For every data point, actual classification = predicted classification</li>
+    </div>
+
+    <div id = "generalized_text">
+      <li style='padding-bottom:10px'>KNN generalizes the data when k is in the middle range.</li>
+      <li style='padding-bottom:10px'>Errors made with misclassified data points when the model 
+        is generalized are generally forgivable because those points are typically borderline 
+        between 2 classes. One flower may very well be of another type if we have a slightly different dataset.</li>
+    </div>
+
+    <div id = "worst_acc_plot">
+      <WorstAcc {worst_acc} />
+    </div>
+
+    <div id = "best_acc_plot">
       <BestAcc {best_acc} />
     </div>
-  </div>
-  {/if}
 
-  {#if slide_position === 7}
-  <div class = "generalized">
-    <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Generalized When k = 99</h2>
-    <li style='padding-bottom:10px'>KNN generalizes the data when k is in the middle range.</li>
-    <li style='padding-bottom:10px'>Errors made with misclassified data points when the model is generalized are generally forgivable because those points are typically borderline between 2 classes. One flower may very well be of another type if we have a slightly different dataset.</li>
-    <div class='generalized_plot'>
+    <div id = "generalized_plot">
       <ModelBreak {model_break} />
     </div>
+    <!-- <div id = "worst_acc">
+      <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Worst Accuracy When k = 150</h2>
+      <li style='padding-bottom:10px'>Dataset size is 150, creating an extreme case of underfit because there is no point of reference for any individual class nomination.</li>
+      <li style='padding-bottom:10px'>First class appeared in the dataset is chosen to be the classification of all points as last resort.</li> 
+      <div class='worst_acc_plot'>
+        <WorstAcc {worst_acc} />
+      </div>
+    </div>
+    <div id = "best_acc">
+      <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)"> Best Accuracy When k = 1</h2>
+      <li style='padding-bottom:10px'>A data point can only reference itself for classification, creating an extreme case of overfit.</li>
+      <li style='padding-bottom:10px'>For every data point, actual classification = predicted classification</li>
+      <div class='best_acc_plot'>
+        <BestAcc {best_acc} />
+      </div>
+    </div>
+    <div id = "generalized">
+      <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Generalized When k = 99</h2>
+      <li style='padding-bottom:10px'>KNN generalizes the data when k is in the middle range.</li>
+      <li style='padding-bottom:10px'>Errors made with misclassified data points when the model is generalized are generally forgivable because those points are typically borderline between 2 classes. One flower may very well be of another type if we have a slightly different dataset.</li>
+      <div class='generalized_plot'>
+        <ModelBreak {model_break} />
+      </div>
+    </div> -->
   </div>
   {/if}
 
-  {#if slide_position === 8}
+  {#if slide_position === 6}
   <div class = "interaction">
     <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Try It Out For Yourself</h2>
     <div class='interaction_plot'>
@@ -190,7 +258,7 @@
   </div>
   {/if}
 
-  {#if slide_position === 9}
+  {#if slide_position === 7}
   <div class='summary'>
     <h2>Takeaways</h2>
     <li style='padding-bottom:10px'>Low k values overfit</li>
