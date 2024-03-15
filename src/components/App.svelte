@@ -14,7 +14,7 @@
   let model_break = [];
   let button;
   let show_true = false;
-  let slide_position = 5;
+  let slide_position = 0;
 
   $: button_t = button_text(show_true);
 
@@ -65,39 +65,49 @@
 </script>
 
 <main>
-  <div id = "slide_buttons">
+  <div height = 743 id = "slide_buttons">
     {#if slide_position !== 0}
     <button id = "prev" class = "
       bg-white 
       hover:bg-gray-100 
       text-gray-800 
       font-semibold py-2 px-4 border 
-      border-gray-400 rounded shadow"
-      style = "transform: translate(-650%, 1600%)"
+      border-gray-400 rounded shadow
+      absolute bottom-8 left-8"
       on:click = {() => slide_position = slide_position - 1}> Previous </button>
     {/if}
-    {#if slide_position !== 9}
+    {#if slide_position < 6}
     <button id = "next" class = "
       bg-white 
       hover:bg-gray-100 
       text-gray-800 
       font-semibold py-2 px-4 border 
-      border-gray-400 rounded shadow"
-      style = "transform: translate(1000%, 1600%)"
+      border-gray-400 rounded shadow
+      absolute bottom-8 right-8"
       on:click = {() => slide_position = slide_position + 1}> Next </button>
+    {/if}
+    {#if slide_position === 6}
+    <button id = "try" class = "
+      bg-white 
+      hover:bg-gray-100 
+      text-gray-800 
+      font-semibold py-2 px-4 border 
+      border-gray-400 rounded shadow
+      absolute bottom-8 right-8"
+      on:click = {() => slide_position = slide_position + 1}> Try it Yourself! </button>
     {/if}
   </div>
   {#if slide_position === 0}
-    <div class='hook'>
+    <div id='hook' class = "translate-y-80">
       <h1 class="text-2xl font-extrabold dark:text-white" style = "text-align: center; transform: translate(0, -30%)">The Importance of Moderation in Machine Learning</h1>
       <p style = "padding:10px; text-align: center;">Han Hoang, Raine Hoang</p>
     </div>
   {/if}
   {#if slide_position === 1}
-    <div class='motivation'>
+    <div id='motivation' class = "translate-y-12">
       <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Our motivation</h2>
       <!-- create a bullet list -->
-      <ul class="list-disc">
+      <ul class="list-disc text-left">
         <li style='padding-bottom:10px'>Shows how a machine learning algorithm work</li>
         <li style='padding-bottom:10px'>K-Nearest Neighbors suits our needs to visualize the entire learning of an algorithm in one view</li>
       </ul>
@@ -123,9 +133,9 @@
   </p>
   -->
   {#if slide_position === 2}
-  <div class='intro'>
+  <div id='intro' class = "translate-y-12">
     <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Brief Introduction to Machine Learning and K-Nearest Neighbors</h2>
-    <ul class="list-disc">
+    <ul class="list-disc text-left">
       <li style='padding-bottom:10px'>Machine learning happens when an algorithm learns the pattern of the data and makes predictions based on what it learned.</li>
       <li style='padding-bottom:10px'>K-Nearest Neighbors is a machine learning algorithm that learns patterns by drawing boundaries between groups of data of different classification.</li>
       <li style='padding-bottom:10px'>Boundaries are determined by the classification of all data points.</li>
@@ -135,9 +145,9 @@
   {/if}
 
   {#if slide_position === 3}
-  <div class='dataset'>
+  <div id='dataset' class = "translate-y-12">
     <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Our dataset</h2>
-    <ul class="list-disc">
+    <ul class="list-disc text-left">
       <!-- include a link to UC Irvine Machine Learning Repository -->
       <li style='padding-bottom:10px'>Sourced from <a href='https://archive.ics.uci.edu/dataset/53/iris'>UC Irvine Machine Learning Repository</a></li>
       <li style='padding-bottom:10px'>Contains 150 data points</li>
@@ -150,9 +160,9 @@
   {/if}
 
   {#if slide_position === 4}
-  <div class = "actual_plot">
+  <div id = "actual_plot" class = "translate-y-12">
     <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Data Visualization of All Data Points with Their Actual Class</h2>
-    <p><b>Note</b>: There are equally 50 points for each class.</p>
+    <p class = "text-left"><b>Note</b>: There are equally 50 points for each class.</p>
     <Iris {iris_data}/>
   </div>
   {/if}
@@ -190,7 +200,7 @@
   {/if} -->
 
   {#if slide_position === 5}
-  <div class = "grid grid-cols-3 gap-4">
+  <div class = "grid grid-cols-3 gap-4 translate-y-12">
     <div id = "worst_acc_title">
       <h2 class="text-2xl font-extrabold dark:text-white">Worst Accuracy When k = 150</h2>
     </div>
@@ -259,8 +269,8 @@
     </div> -->
   </div>
 
-  <div id = "legend" class = "-translate-x-20 -translate-y-5">
-    <svg width = "2000" id = "legend" stroke = "#000">
+  <div id = "legend" class = "-translate-x-20 translate-y-6">
+    <svg width = "1042" id = "legend" stroke = "#000">
       <circle cx = 500 cy = 90 fill = "#4059AD" stroke = "#000" r = "13"/>
       <text x = 530 y = 98 font-size = 20>Iris-setosa</text>
       <circle cx = 700 cy = 90 fill = "#97D8C4" stroke = "#000" r = "13"/>
@@ -270,7 +280,7 @@
     </svg>
   </div>
 
-  <div id = "true_button" class = "-translate-y-28">
+  <div id = "true_button" class = "-translate-y-16">
       <button bind:this = {button} on:click = {() => {show_true = !show_true}} 
       class = "
       bg-white 
@@ -285,8 +295,8 @@
   </div>
   {/if}
 
-  {#if slide_position === 6}
-  <div class = "interaction">
+  {#if slide_position === 7}
+  <div id = "interaction" class = "translate-y-12">
     <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Try It Out For Yourself</h2>
     <div class='interaction_plot'>
       <DataPoints {data}/>
@@ -294,13 +304,13 @@
   </div>
   {/if}
 
-  {#if slide_position === 7}
-  <div class='summary'>
-    <h2 class = "text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Takeaways</h2>
-    <li style='padding-bottom:10px'>Low k values overfit</li>
-    <li style='padding-bottom:10px'>High k values underfit</li>
-    <li style='padding-bottom:10px'>Generalized when k is not too low or too high</li>
-    <li style='padding-bottom:10px'>Best accuracy score != best model</li>
+  {#if slide_position === 6}
+  <div class='summary translate-y-12' style = "padding-bottom: 0;">
+    <h2 class = "text-2xl font-extrabold dark:text-white pb-2">Takeaways</h2>
+    <li class = "pb-3">Low k values overfit</li>
+    <li class = "pb-3">High k values underfit</li>
+    <li class = "pb-3">Generalized when k is not too low or too high</li>
+    <li>Best accuracy score != best model</li>
   </div>
   {/if}
   <!-- <div class = "k-button">
