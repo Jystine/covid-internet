@@ -221,15 +221,15 @@
     </div>
 
     <div id = "worst_acc_plot">
-      <WorstAcc {worst_acc} />
+      <WorstAcc {worst_acc} {show_true} />
     </div>
 
     <div id = "best_acc_plot">
-      <BestAcc {best_acc} />
+      <BestAcc {best_acc} {show_true} />
     </div>
 
     <div id = "generalized_plot">
-      <ModelBreak {model_break} />
+      <ModelBreak {model_break} {show_true} />
     </div>
 
 
@@ -259,14 +259,16 @@
     </div> -->
   </div>
 
-  <svg width = "825" id = "legend" stroke = "#000">
-    <circle cx = 500 cy = 90 fill = "#4059AD" stroke = "#000" r = "13"/>
-    <text x = 530 y = 98 font-size = 20>Iris-setosa</text>
-    <circle cx = 600 cy = 90 fill = "#97D8C4" stroke = "#000" r = "13"/>
-    <text x = 600 y = 98 font-size = 20>Iris-versicolor</text>
-    <circle cx = 670 cy = 90 fill = "#F4B942" stroke = "#000" r = "13"/>
-    <text x = 670 y = 98 font-size = 20>Iris-virginica</text>
-  </svg>
+  <div id = "legend" class = "-translate-x-20">
+    <svg width = "2000" id = "legend" stroke = "#000">
+      <circle cx = 500 cy = 90 fill = "#4059AD" stroke = "#000" r = "13"/>
+      <text x = 530 y = 98 font-size = 20>Iris-setosa</text>
+      <circle cx = 700 cy = 90 fill = "#97D8C4" stroke = "#000" r = "13"/>
+      <text x = 730 y = 98 font-size = 20>Iris-versicolor</text>
+      <circle cx = 930 cy = 90 fill = "#F4B942" stroke = "#000" r = "13"/>
+      <text x = 960 y = 98 font-size = 20>Iris-virginica</text>
+    </svg>
+  </div>
 
   <div id = "true_button">
       <button bind:this = {button} on:click = {() => {show_true = !show_true}} 
@@ -294,7 +296,7 @@
 
   {#if slide_position === 7}
   <div class='summary'>
-    <h2>Takeaways</h2>
+    <h2 class = "text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Takeaways</h2>
     <li style='padding-bottom:10px'>Low k values overfit</li>
     <li style='padding-bottom:10px'>High k values underfit</li>
     <li style='padding-bottom:10px'>Generalized when k is not too low or too high</li>

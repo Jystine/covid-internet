@@ -1,6 +1,7 @@
 <script>
   import * as d3 from "d3";
   export let worst_acc = [];
+  export let show_true;
 
   const width = 528;
   const height = 300;
@@ -12,9 +13,6 @@
   let svg;
   let gx;
   let gy;
-  let button;
-  let show_true = false;
-  $: button_t = button_text(show_true);
   
   $: accuracy_score = accuracy(worst_acc);
 
@@ -78,7 +76,7 @@
           <rect key = {i} width = 15 height = 10 x = {x(d.petal_width)} y = {y(d.petal_length) - 10} fill = "#F4B942" r = "4.5"/>
         {/if}
       {/if}
-      {#if d.type === "point"}
+      {#if show_true === false && d.type === "point"}
         {#if d.predicted === "Iris-setosa"}
           <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#4059AD" stroke = "#000" r = "4.5"/>
         {/if}
@@ -89,7 +87,7 @@
           <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#F4B942" stroke = "#000" r = "4.5"/>
         {/if}
       {/if}
-      <!-- {#if show_true === true && d.type === "point"}
+      {#if show_true === true && d.type === "point"}
         {#if d.class === "Iris-setosa"}
           <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#4059AD" stroke = "#000" r = "4.5"/>
         {/if}
@@ -99,7 +97,7 @@
         {#if d.class === "Iris-virginica"}
           <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#F4B942" stroke = "#000" r = "4.5"/>
         {/if}
-      {/if} -->
+      {/if}
     {/each}
   {/if}
 
