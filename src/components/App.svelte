@@ -13,7 +13,10 @@
   let best_acc = [];
   let model_break = [];
   let button;
-  let slide_position = 0;
+  let show_true = false;
+  let slide_position = 5;
+
+  $: button_t = button_text(show_true);
 
     onMount(async () => {
             let res = await fetch('k_3.csv'); 
@@ -50,8 +53,13 @@
             console.log(model_break);
         });
       
-      function updateComponent(idx) {
-      };
+    function button_text(status) {
+      if(status === false) {
+        return "Show Actual Data"
+      } else if (status === true) {
+        return "Hide Actual Data"
+      }
+    }
 
     $: console.log(data);
 </script>
@@ -89,9 +97,10 @@
     <div class='motivation'>
       <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Our motivation</h2>
       <!-- create a bullet list -->
-      <ul>
+      <ul class="list-disc">
         <li style='padding-bottom:10px'>Shows how a machine learning algorithm work</li>
         <li style='padding-bottom:10px'>K-Nearest Neighbors suits our needs to visualize the entire learning of an algorithm in one view</li>
+      </ul>
     </div>
   {/if}
   <!--
@@ -116,7 +125,7 @@
   {#if slide_position === 2}
   <div class='intro'>
     <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Brief Introduction to Machine Learning and K-Nearest Neighbors</h2>
-    <ul>
+    <ul class="list-disc">
       <li style='padding-bottom:10px'>Machine learning happens when an algorithm learns the pattern of the data and makes predictions based on what it learned.</li>
       <li style='padding-bottom:10px'>K-Nearest Neighbors is a machine learning algorithm that learns patterns by drawing boundaries between groups of data of different classification.</li>
       <li style='padding-bottom:10px'>Boundaries are determined by the classification of all data points.</li>
@@ -128,7 +137,7 @@
   {#if slide_position === 3}
   <div class='dataset'>
     <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Our dataset</h2>
-    <ul>
+    <ul class="list-disc">
       <!-- include a link to UC Irvine Machine Learning Repository -->
       <li style='padding-bottom:10px'>Sourced from <a href='https://archive.ics.uci.edu/dataset/53/iris'>UC Irvine Machine Learning Repository</a></li>
       <li style='padding-bottom:10px'>Contains 150 data points</li>
@@ -195,18 +204,18 @@
     </div>
 
     <div id = "worst_acc_text">
-      <li style='padding-bottom:10px'>Dataset size is 150, creating an extreme case of underfit because there is no point of reference for any individual class nomination.</li>
-      <li style='padding-bottom:10px'>First class appeared in the dataset is chosen to be the classification of all points as last resort.</li> 
+      <li style='padding-bottom:10px' class = "text-left">Dataset size is 150, creating an extreme case of underfit because there is no point of reference for any individual class nomination.</li>
+      <li style='padding-bottom:10px' class = "text-left">First class appeared in the dataset is chosen to be the classification of all points as last resort.</li> 
     </div>
 
     <div id = "best_acc_text">
-      <li style='padding-bottom:10px'>A data point can only reference itself for classification, creating an extreme case of overfit.</li>
-      <li style='padding-bottom:10px'>For every data point, actual classification = predicted classification</li>
+      <li style='padding-bottom:10px' class = "text-left">A data point can only reference itself for classification, creating an extreme case of overfit.</li>
+      <li style='padding-bottom:10px' class = "text-left">For every data point, actual classification = predicted classification</li>
     </div>
 
     <div id = "generalized_text">
-      <li style='padding-bottom:10px'>KNN generalizes the data when k is in the middle range.</li>
-      <li style='padding-bottom:10px'>Errors made with misclassified data points when the model 
+      <li style='padding-bottom:10px' class = "text-left">KNN generalizes the data when k is in the middle range.</li>
+      <li style='padding-bottom:10px' class = "text-left">Errors made with misclassified data points when the model 
         is generalized are generally forgivable because those points are typically borderline 
         between 2 classes. One flower may very well be of another type if we have a slightly different dataset.</li>
     </div>
@@ -222,6 +231,8 @@
     <div id = "generalized_plot">
       <ModelBreak {model_break} />
     </div>
+
+
     <!-- <div id = "worst_acc">
       <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Worst Accuracy When k = 150</h2>
       <li style='padding-bottom:10px'>Dataset size is 150, creating an extreme case of underfit because there is no point of reference for any individual class nomination.</li>
@@ -246,6 +257,29 @@
         <ModelBreak {model_break} />
       </div>
     </div> -->
+  </div>
+
+  <svg width = "825" id = "legend" stroke = "#000">
+    <circle cx = 500 cy = 90 fill = "#4059AD" stroke = "#000" r = "13"/>
+    <text x = 530 y = 98 font-size = 20>Iris-setosa</text>
+    <circle cx = 600 cy = 90 fill = "#97D8C4" stroke = "#000" r = "13"/>
+    <text x = 600 y = 98 font-size = 20>Iris-versicolor</text>
+    <circle cx = 670 cy = 90 fill = "#F4B942" stroke = "#000" r = "13"/>
+    <text x = 670 y = 98 font-size = 20>Iris-virginica</text>
+  </svg>
+
+  <div id = "true_button">
+      <button bind:this = {button} on:click = {() => {show_true = !show_true}} 
+      class = "
+      bg-white 
+      hover:bg-gray-100 
+      text-gray-800 
+      font-semibold py-2 px-4 border 
+      border-gray-400 rounded shadow
+      translate-y-20"
+      >
+      {button_t}
+      </button>
   </div>
   {/if}
 

@@ -36,7 +36,7 @@
   function accuracy(data) {
     let correct = 0;
     if (data.length !== 0) {
-      for (let i = 10350; i >= 10201; i = i - 1) {
+      for (let i = 2750; i >= 2601; i = i - 1) {
         if (data[i].class === data[i].predicted) {
           correct = correct + 1;
         }
@@ -71,37 +71,37 @@
     {#each model_break as d, i}
       {#if d.type === "boundary"}
         {#if d.predicted === "Iris-setosa"}
-          <rect key = {i} width = 15 height = 10 x = {x(d.petal_width)} y = {y(d.petal_length) - 10} fill = "#4059AD" r = "5"/>
+          <rect key = {i} width = 15 height = 10 x = {x(d.petal_width)} y = {y(d.petal_length) - 10} fill = "#4059AD" r = "4.5"/>
         {/if}
         {#if d.predicted === "Iris-versicolor"}
-          <rect key = {i} width = 15 height = 10 x = {x(d.petal_width)} y = {y(d.petal_length) - 10} fill = "#97D8C4" r = "5"/>
+          <rect key = {i} width = 15 height = 10 x = {x(d.petal_width)} y = {y(d.petal_length) - 10} fill = "#97D8C4" r = "4.5"/>
         {/if}
         {#if d.predicted === "Iris-virginica"}
-          <rect key = {i} width = 15 height = 10 x = {x(d.petal_width)} y = {y(d.petal_length) - 10} fill = "#F4B942" r = "5"/>
+          <rect key = {i} width = 15 height = 10 x = {x(d.petal_width)} y = {y(d.petal_length) - 10} fill = "#F4B942" r = "4.5"/>
         {/if}
       {/if}
-      {#if show_true === false && d.type === "point"}
+      {#if d.type === "point"}
         {#if d.predicted === "Iris-setosa"}
-          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#4059AD" stroke = "#000" r = "5"/>
+          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#4059AD" stroke = "#000" r = "4.5"/>
         {/if}
         {#if d.predicted === "Iris-versicolor"}
-          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#97D8C4" stroke = "#000" r = "5"/>
+          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#97D8C4" stroke = "#000" r = "4.5"/>
         {/if}
         {#if d.predicted === "Iris-virginica"}
-          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#F4B942" stroke = "#000" r = "5"/>
+          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#F4B942" stroke = "#000" r = "4.5"/>
         {/if}
       {/if}
-      {#if show_true === true && d.type === "point"}
+      <!-- {#if show_true === true && d.type === "point"}
         {#if d.class === "Iris-setosa"}
-          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#4059AD" stroke = "#000" r = "5"/>
+          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#4059AD" stroke = "#000" r = "4.5"/>
         {/if}
         {#if d.class === "Iris-versicolor"}
-          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#97D8C4" stroke = "#000" r = "5"/>
+          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#97D8C4" stroke = "#000" r = "4.5"/>
         {/if}
         {#if d.class === "Iris-virginica"}
-          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#F4B942" stroke = "#000" r = "5"/>
+          <circle key = {i} cx = {x(d.petal_width)} cy = {y(d.petal_length)} fill = "#F4B942" stroke = "#000" r = "4.5"/>
         {/if}
-      {/if}
+      {/if} -->
     {/each}
   {/if}
 
@@ -131,7 +131,7 @@
   </svg>
 </div>
 
-<div class = "overlay">
+<!-- <div class = "overlay">
    <div style = "transform: translate(-16.5%, -40%)">
     <button bind:this = {button} on:click = {() => {show_true = !show_true}} style = "margin: 10px" 
       class = "
@@ -144,7 +144,7 @@
       {button_t}
     </button>
   </div>
-</div>
+</div> -->
 
 <style lang="postcss">
   rect {

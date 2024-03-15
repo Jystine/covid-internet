@@ -42,7 +42,7 @@
   function accuracy(data) {
     let correct = 0;
     if (data.length !== 0) {
-      for (let i = 10350; i >= 10201; i = i - 1) {
+      for (let i = 2750; i >= 2601; i = i - 1) {
         if (data[i].class === data[i].predicted) {
           correct = correct + 1;
         }
@@ -118,13 +118,13 @@
     {#each data as d, i}
       {#if d.type === "boundary"}
         {#if d.predicted === "Iris-setosa"}
-          <rect key = {i} width = 15 height = 10 x = {x(d.petal_width)} y = {y(d.petal_length) - 10} fill = "#4059AD" r = "5"/>
+          <rect key = {i} width = 20 height = 15 x = {x(d.petal_width)} y = {y(d.petal_length) - 10} fill = "#4059AD" r = "5"/>
         {/if}
         {#if d.predicted === "Iris-versicolor"}
-          <rect key = {i} width = 15 height = 10 x = {x(d.petal_width)} y = {y(d.petal_length) - 10} fill = "#97D8C4" r = "5"/>
+          <rect key = {i} width = 20 height = 15 x = {x(d.petal_width)} y = {y(d.petal_length) - 10} fill = "#97D8C4" r = "5"/>
         {/if}
         {#if d.predicted === "Iris-virginica"}
-          <rect key = {i} width = 15 height = 10 x = {x(d.petal_width)} y = {y(d.petal_length) - 10} fill = "#F4B942" r = "5"/>
+          <rect key = {i} width = 20 height = 15 x = {x(d.petal_width)} y = {y(d.petal_length) - 10} fill = "#F4B942" r = "5"/>
         {/if}
       {/if}
       {#if show_true === false && d.type === "point"}
@@ -218,7 +218,7 @@
   </div>
   <div id = "valid">
     {#if valid === false}
-      <p class = "text-red-500 text-l italic" style = "transform: translate(0, -350%)">Not a valid k</p>
+      <p class = "text-red-500 text-l italic container mx-auto w-24" style = "transform: translate(0, -350%)">Not a valid k</p>
     {/if}
   </div>
 
