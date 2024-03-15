@@ -2,8 +2,8 @@
   import * as d3 from "d3";
   export let model_break
 
-  const width = 928;
-  const height = 500;
+  const width = 528;
+  const height = 300;
   const marginTop = 20;
   const marginRight = 30;
   const marginBottom = 20;
@@ -114,7 +114,7 @@
     x = 10
     y = -300
     style = "writing-mode: vertical-lr; transform: rotate(180deg);">Pedal Length</text>
-    <g class = "legend" stroke = "#000">
+    <!-- <g class = "legend" stroke = "#000">
       <text x = 1030 y = 58 font-size = 20>Legend</text>
       <circle cx = 1000 cy = 100 fill = "#4059AD" stroke = "#000" r = "13"/>
       <text x = 1030 y = 108 font-size = 20>Iris-setosa</text>
@@ -122,7 +122,7 @@
       <text x = 1030 y = 158 font-size = 20>Iris-versicolor</text>
       <circle cx = 1000 cy = 200 fill = "#F4B942" stroke = "#000" r = "13"/>
       <text x = 1030 y = 208 font-size = 20>Iris-virginica</text>
-    </g>
+    </g> -->
 
   <g class = "accuracy_score">
     <text>Accuracy Score: {accuracy_score}%</text>
