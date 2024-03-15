@@ -259,7 +259,7 @@
     </div> -->
   </div>
 
-  <div id = "legend" class = "-translate-x-20">
+  <div id = "legend" class = "-translate-x-20 -translate-y-5">
     <svg width = "2000" id = "legend" stroke = "#000">
       <circle cx = 500 cy = 90 fill = "#4059AD" stroke = "#000" r = "13"/>
       <text x = 530 y = 98 font-size = 20>Iris-setosa</text>
@@ -270,7 +270,7 @@
     </svg>
   </div>
 
-  <div id = "true_button">
+  <div id = "true_button" class = "-translate-y-28">
       <button bind:this = {button} on:click = {() => {show_true = !show_true}} 
       class = "
       bg-white 

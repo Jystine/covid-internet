@@ -103,14 +103,14 @@
     {/each}
   {/if}
 
-  <text x = 420 
-    y = 530 
-    font-size = 20
+  <text x = 225 
+    y = 330 
+    font-size = 18
     style = "text-align:center">Petal Width</text>
     <text 
-    font-size = 20
+    font-size = 18
     x = 10
-    y = -300
+    y = -205
     style = "writing-mode: vertical-lr; transform: rotate(180deg);">Pedal Length</text>
     <!-- <g class = "legend" stroke = "#000">
       <text x = 1030 y = 58 font-size = 20>Legend</text>
@@ -123,7 +123,7 @@
     </g> -->
 
   <g class = "accuracy_score">
-    <text>Accuracy Score: {accuracy_score}%</text>
+    <text font-weight = bold>Accuracy Score: {accuracy_score}%</text>
   </g>
 
   </svg>
