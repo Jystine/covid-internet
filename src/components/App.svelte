@@ -98,15 +98,16 @@
     {/if}
   </div>
   {#if slide_position === 0}
-    <div id='hook' class = "translate-y-80">
-      <h1 class="text-2xl font-extrabold dark:text-white" style = "text-align: center; transform: translate(0, -30%)">The Importance of Moderation in Machine Learning</h1>
+    <div id='hook' class = "translate-y-80 font-['Open_Sans'] text-4xl">
+      <h1 class="font-extrabold dark:text-white" style = "text-align: center; transform: translate(0, -30%)">The Importance of Moderation in Machine Learning</h1>
       <p style = "padding:10px; text-align: center;">Han Hoang, Raine Hoang</p>
     </div>
   {/if}
   {#if slide_position === 1}
-    <div id='motivation' class = "translate-y-12">
-      <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Our motivation</h2>
+    <div id='motivation' class = "translate-y-24 font-['Open_Sans'] text-2xl">
+      <h2 class="font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Our motivation</h2>
       <!-- create a bullet list -->
+      <!-- stack the class in Tailwind-->
       <ul class="list-disc text-left">
         <li style='padding-bottom:10px'>Shows how a machine learning algorithm work</li>
         <li style='padding-bottom:10px'>K-Nearest Neighbors suits our needs to visualize the entire learning of an algorithm in one view</li>
@@ -133,8 +134,8 @@
   </p>
   -->
   {#if slide_position === 2}
-  <div id='intro' class = "translate-y-12">
-    <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Brief Introduction to Machine Learning and K-Nearest Neighbors</h2>
+  <div id='intro' class = "translate-y-12 font-['Open_Sans'] text-2xl">
+    <h2 class="text-4xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Brief Introduction to Machine Learning and K-Nearest Neighbors</h2>
     <ul class="list-disc text-left">
       <li style='padding-bottom:10px'>Machine learning happens when an algorithm learns the pattern of the data and makes predictions based on what it learned.</li>
       <li style='padding-bottom:10px'>K-Nearest Neighbors is a machine learning algorithm that learns patterns by drawing boundaries between groups of data of different classification.</li>
@@ -145,8 +146,8 @@
   {/if}
 
   {#if slide_position === 3}
-  <div id='dataset' class = "translate-y-12">
-    <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Our dataset</h2>
+  <div id='dataset' class = "translate-y-12 font-['Open_Sans'] text-2xl">
+    <h2 class="text-4xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Our dataset</h2>
     <ul class="list-disc text-left">
       <!-- include a link to UC Irvine Machine Learning Repository -->
       <li style='padding-bottom:10px'>Sourced from <a href='https://archive.ics.uci.edu/dataset/53/iris'>UC Irvine Machine Learning Repository</a></li>
@@ -160,8 +161,8 @@
   {/if}
 
   {#if slide_position === 4}
-  <div id = "actual_plot" class = "translate-y-12">
-    <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Data Visualization of All Data Points with Their Actual Class</h2>
+  <div id = "actual_plot" class = "translate-y-12 font-['Open_Sans'] text-2xl">
+    <h2 class="text-4xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Data Visualization of All Data Points with Their Actual Class</h2>
     <p class = "text-left"><b>Note</b>: There are equally 50 points for each class.</p>
     <Iris {iris_data}/>
   </div>
@@ -200,17 +201,17 @@
   {/if} -->
 
   {#if slide_position === 5}
-  <div class = "grid grid-cols-3 gap-4 translate-y-12">
+  <div class = "grid grid-cols-3 gap-4 translate-y-12 font-['Open_Sans'] text-2xl">
     <div id = "worst_acc_title">
-      <h2 class="text-2xl font-extrabold dark:text-white">Worst Accuracy When k = 150</h2>
+      <h2 class="text-4xl font-extrabold dark:text-white">Worst Accuracy When k = 150</h2>
     </div>
 
     <div id = "best_acc_title">
-      <h2 class="text-2xl font-extrabold dark:text-white"> Best Accuracy When k = 1</h2>
+      <h2 class="text-4xl font-extrabold dark:text-white"> Best Accuracy When k = 1</h2>
     </div>
 
     <div id = "generalized_title">
-      <h2 class="text-2xl font-extrabold dark:text-white">Generalized When k = 99</h2>
+      <h2 class="text-4xl font-extrabold dark:text-white">Generalized When k = 99</h2>
     </div>
 
     <div id = "worst_acc_text">
@@ -269,7 +270,7 @@
     </div> -->
   </div>
 
-  <div id = "legend" class = "-translate-x-20 translate-y-6">
+  <div id = "legend" class = "-translate-x-20 translate-y-6 font-['Open_Sans']">
     <svg width = "1042" id = "legend" stroke = "#000">
       <circle cx = 500 cy = 90 fill = "#4059AD" stroke = "#000" r = "13"/>
       <text x = 530 y = 98 font-size = 20>Iris-setosa</text>
@@ -296,8 +297,8 @@
   {/if}
 
   {#if slide_position === 7}
-  <div id = "interaction" class = "translate-y-12">
-    <h2 class="text-2xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Try It Out For Yourself</h2>
+  <div id = "interaction" class = "translate-y-12 text-2xl">
+    <h2 class="text-4xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Try It Out For Yourself</h2>
     <div class='interaction_plot'>
       <DataPoints {data}/>
     </div>
@@ -305,8 +306,8 @@
   {/if}
 
   {#if slide_position === 6}
-  <div class='summary translate-y-12' style = "padding-bottom: 0;">
-    <h2 class = "text-2xl font-extrabold dark:text-white pb-2">Takeaways</h2>
+  <div class="summary translate-y-12 font-['Open_Sans'] text-2xl" style = "padding-bottom: 0;">
+    <h2 class = "text-4xl font-extrabold dark:text-white pb-2">Takeaways</h2>
     <li class = "pb-3">Low k values overfit</li>
     <li class = "pb-3">High k values underfit</li>
     <li class = "pb-3">Generalized when k is not too low or too high</li>
