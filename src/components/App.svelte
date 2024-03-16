@@ -203,11 +203,11 @@
   {#if slide_position === 5}
   <div class = "grid grid-cols-3 gap-4 translate-y-12 font-['Open_Sans'] text-2xl">
     <div id = "worst_acc_title">
-      <h2 class="text-4xl font-extrabold dark:text-white">Worst Accuracy When k = 150</h2>
+      <h2 class="text-4xl font-extrabold dark:text-white">Worst Accuracy When k = 150 (underfit)</h2>
     </div>
 
     <div id = "best_acc_title">
-      <h2 class="text-4xl font-extrabold dark:text-white"> Best Accuracy When k = 1</h2>
+      <h2 class="text-4xl font-extrabold dark:text-white"> Best Accuracy When k = 1 (overfit)</h2>
     </div>
 
     <div id = "generalized_title">
@@ -215,20 +215,21 @@
     </div>
 
     <div id = "worst_acc_text">
-      <li style='padding-bottom:10px' class = "text-left">Dataset size is 150, creating an extreme case of underfit because there is no point of reference for any individual class nomination.</li>
-      <li style='padding-bottom:10px' class = "text-left">First class appeared in the dataset is chosen to be the classification of all points as last resort.</li> 
+      <li style='padding-bottom:10px' class = "text-left">This is when all points get classified to one of the 3 classes. First class that appearred in the dataset is picked as algorithm's last resort.</li>
+      <li style='padding-bottom:10px' class = "text-left">This is because when k = dataset size, there is no point of reference for any individual class nomination.</li> 
     </div>
 
     <div id = "best_acc_text">
-      <li style='padding-bottom:10px' class = "text-left">A data point can only reference itself for classification, creating an extreme case of overfit.</li>
-      <li style='padding-bottom:10px' class = "text-left">For every data point, actual classification = predicted classification</li>
+      <li style='padding-bottom:10px' class = "text-left">On the other hand, we got 99% accuracy score when k = 1.</li>
+      <li style='padding-bottom:10px' class = "text-left">This is because a data point can only reference itself for classification.</li>
+      <li style='padding-bottom:10px' class = "text-left">As such, for every data point, actual classification = predicted classification.</li>
     </div>
 
     <div id = "generalized_text">
-      <li style='padding-bottom:10px' class = "text-left">KNN generalizes the data when k is in the middle range.</li>
-      <li style='padding-bottom:10px' class = "text-left">Errors made with misclassified data points when the model 
-        is generalized are generally forgivable because those points are typically borderline 
-        between 2 classes. One flower may very well be of another type if we have a slightly different dataset.</li>
+      <li style='padding-bottom:10px' class = "text-left">When k = 99, there are some data points borderline between 2 classes that KNN misclassified, 
+        but they are generally forgivable because it reflects how we humans actually make predictions for these flowers.</li>
+      <li style='padding-bottom:10px' class = "text-left">If k is in some middle range, we say that KNN model generalizes to the actual model in the real world.</li>
+      <li style='padding-bottom:10px' class = "text-left font-extrabold">We want this!</li>
     </div>
 
     <div id = "worst_acc_plot">
@@ -270,8 +271,8 @@
     </div> -->
   </div>
 
-  <div id = "legend" class = "-translate-x-20 translate-y-6 font-['Open_Sans']">
-    <svg width = "1042" id = "legend" stroke = "#000">
+  <div id = "legend" class = "-translate-x-5 translate-y-6 font-['Open_Sans']">
+    <svg width = "1100" id = "legend" stroke = "#000">
       <circle cx = 500 cy = 90 fill = "#4059AD" stroke = "#000" r = "13"/>
       <text x = 530 y = 98 font-size = 20>Iris-setosa</text>
       <circle cx = 700 cy = 90 fill = "#97D8C4" stroke = "#000" r = "13"/>
