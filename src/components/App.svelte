@@ -226,8 +226,7 @@
     </div>
 
     <div id = "generalized_text">
-      <li style='padding-bottom:10px' class = "text-left">When k = 99, there are some data points borderline between 2 classes that KNN misclassified, 
-        but they are generally forgivable because it reflects how we humans actually make predictions for these flowers.</li>
+      <li style='padding-bottom:10px' class = "text-left">When k = 99, there are some data points borderline between 2 classes that KNN misclassified, but the errors are generally forgivable because it reflects how we humans actually make predictions for these flowers.</li>
       <li style='padding-bottom:10px' class = "text-left">If k is in some middle range, we say that KNN model generalizes to the actual model in the real world.</li>
       <li style='padding-bottom:10px' class = "text-left font-extrabold">We want this!</li>
     </div>
