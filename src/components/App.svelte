@@ -76,7 +76,7 @@
       absolute bottom-8 left-8"
       on:click = {() => slide_position = slide_position - 1}> Previous </button>
     {/if}
-    {#if slide_position < 6}
+    {#if slide_position < 5}
     <button id = "next" class = "
       bg-white 
       hover:bg-gray-100 
@@ -86,7 +86,7 @@
       absolute bottom-8 right-8"
       on:click = {() => slide_position = slide_position + 1}> Next </button>
     {/if}
-    {#if slide_position === 6}
+    {#if slide_position === 5}
     <button id = "try" class = "
       bg-white 
       hover:bg-gray-100 
@@ -103,17 +103,17 @@
       <p style = "padding:10px; text-align: center;">Han Hoang, Raine Hoang</p>
     </div>
   {/if}
-  {#if slide_position === 1}
+  <!-- {#if slide_position === 1}
     <div id='motivation' class = "translate-y-24 font-['Open_Sans'] text-2xl">
       <h2 class="font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Our motivation</h2>
-      <!-- create a bullet list -->
-      <!-- stack the class in Tailwind-->
+      create a bullet list -->
+      <!-- stack the class in Tailwind
       <ul class="list-disc text-left">
         <li style='padding-bottom:10px'>Shows how a machine learning algorithm work</li>
         <li style='padding-bottom:10px'>K-Nearest Neighbors suits our needs to visualize the entire learning of an algorithm in one view</li>
       </ul>
     </div>
-  {/if}
+  {/if} -->
   <!--
   <h1>KNN Machine Learning</h1>
   <p style = "padding:10px; text-align: left;">Within machine learning, there are 3 main subtypes. The first one is supervised learning, which involves using labeled data in order to making predictions. 
@@ -133,7 +133,7 @@
     Versicolor, or Iris Virginica and we are going to be using a combination of petal length and petal width to classify that flower.
   </p>
   -->
-  {#if slide_position === 2}
+  {#if slide_position === 1}
   <div id='intro' class = "translate-y-12 font-['Open_Sans'] text-2xl">
     <h2 class="text-4xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Brief Introduction to Machine Learning and K-Nearest Neighbors</h2>
     <ul class="list-disc text-left">
@@ -145,7 +145,7 @@
   </div>
   {/if}
 
-  {#if slide_position === 3}
+  {#if slide_position === 2}
   <div id='dataset' class = "translate-y-12 font-['Open_Sans'] text-2xl">
     <h2 class="text-4xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Our dataset</h2>
     <ul class="list-disc text-left">
@@ -160,7 +160,7 @@
   </div>
   {/if}
 
-  {#if slide_position === 4}
+  {#if slide_position === 3}
   <div id = "actual_plot" class = "translate-y-12 font-['Open_Sans'] text-2xl">
     <h2 class="text-4xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Data Visualization of All Data Points with Their Actual Class</h2>
     <p class = "text-left"><b>Note</b>: There are equally 50 points for each class.</p>
@@ -200,7 +200,7 @@
   </div>
   {/if} -->
 
-  {#if slide_position === 5}
+  {#if slide_position === 4}
   <div class = "grid grid-cols-3 gap-4 translate-y-12 font-['Open_Sans'] text-2xl">
     <div id = "worst_acc_title">
       <h2 class="text-4xl font-extrabold dark:text-white">Worst Accuracy When k = 150 (underfit)</h2>
@@ -296,7 +296,7 @@
   </div>
   {/if}
 
-  {#if slide_position === 7}
+  {#if slide_position === 6}
   <div id = "interaction" class = "translate-y-12 text-2xl">
     <h2 class="text-4xl font-extrabold dark:text-white" style = "text-align: left; transform: translate(0, -30%)">Try It Out For Yourself</h2>
     <div class='interaction_plot'>
@@ -305,7 +305,7 @@
   </div>
   {/if}
 
-  {#if slide_position === 6}
+  {#if slide_position === 5}
   <div class="summary translate-y-12 font-['Open_Sans'] text-2xl" style = "padding-bottom: 0;">
     <h2 class = "text-4xl font-extrabold dark:text-white pb-2">Takeaways</h2>
     <li class = "pb-3">Low k values overfit</li>

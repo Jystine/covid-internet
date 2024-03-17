@@ -101,7 +101,7 @@
   $: console.log(typeof k_input);
 </script>
 
-<div class = "plot">
+<div id = "plot" class = "absolute">
   <svg
       bind:this = {svg}
       {width}
@@ -176,16 +176,15 @@
   </g>
 
   </svg>
-</div>
 
 
 
-<div class = "translate-x-36 -translate-y-3/4">
-<div id = "interactive" class = "translate-x-1/3 -translate-y-full grid grid-cols-1">
-    <div class = "label" style = "transform: translate(-16.5%, 150%)">
+<!-- <div class = "relative translate-x-36 -translate-y-3/4">
+<div id = "interactive" class = "grid grid-cols-1">
+    <div id = "label" class = "">
       <label id = "label">{button_label}</label>
     </div>
-    <div id = "input-box" class = "w-full md:w-1/4 px-3 translate-x-72 translate-y-10">
+    <div id = "input-box" class = "w-full md:w-1/4 px-3">
       {#if valid === false}
         <input class = "shadow appearance-none border-red-700 rounded w-full py-2 px-3 text-gray-700 border leading-tight focus:outline-none focus:shadow-outline" bind:value = {k_input} type = "text" id = "k" placeholder = "Error input" />
         <p class="text-red-500 text-xs italic .p-0"> Invalid k.</p>
@@ -194,7 +193,7 @@
       <input class = "shadow appearance-none border-gray-700 rounded w-full py-2 px-3 text-gray-700 border leading-tight focus:outline-none focus:shadow-outline" bind:value = {k_input} type = "text" id = "k" placeholder = "Insert values from 1-150" />
       {/if}
     </div>
-    <div class = "-translate-x-28 translate-y-16">
+    <div class = "">
     <div id = "classify_button">
         <button bind:this={button2} class = "
           bg-white 
@@ -207,15 +206,10 @@
           on:click={() => {k = determine_k(k_input, k), path = path_construction(k_input, path), valid = determine_valid(k_input), update(path)}}>Classify</button>
     </div>
     </div>
-    <!-- <div id = "valid">
-      {#if valid === false}
-        <p class = "text-red-500 text-l italic container mx-auto w-24" weight = 10 height = 10>Not a valid k</p>
-      {/if}
-    </div> -->
   </div>
-  </div>  
+</div> -->
 
-  <div>
+  <div class = " container mx-auto relative right-0 -bottom-12">
       <button bind:this = {button1} on:click = {() => {show_true = !show_true}}
         class = "
         bg-white 
@@ -223,12 +217,43 @@
         text-gray-800 
         font-semibold py-2 px-4 border 
         border-gray-400 rounded shadow
-        -translate-x-56
-        -translate-y-14"
+        "
         >
         {button_t}
       </button>
   </div>
+</div>
+
+<div class = "absolute left-3/4 top-full translate-y-full pt-8">
+<div id = "interactive" class = "grid grid-cols-1">
+    <div id = "label" class = "relative right-32">
+      <label id = "label">{button_label}</label>
+    </div>
+    <div id = "input-box" class = "w-full md:w-full relative right-32 py-4">
+      {#if valid === false}
+        <input class = "shadow appearance-none border-red-700 rounded w-full py-2 px-3 text-gray-700 border leading-tight focus:outline-none focus:shadow-outline" bind:value = {k_input} type = "text" id = "k" placeholder = "Error input" />
+        <p class="text-red-500 text-xs italic p-0"> Invalid k.</p>
+      {/if}
+      {#if valid === true}
+      <input class = "shadow appearance-none border-gray-700 rounded w-full py-2 px-3 text-gray-700 border leading-tight focus:outline-none focus:shadow-outline" bind:value = {k_input} type = "text" id = "k" placeholder = "Insert values from 1-150" />
+      {/if}
+    </div>
+    <div class = "">
+    <div id = "classify_button">
+        <button bind:this={button2} class = "
+          bg-white 
+          hover:bg-gray-100 
+          text-gray-800 
+          font-semibold py-2 px-4 border 
+          border-gray-400 rounded shadow
+          -translate-x-full
+          "
+          on:click={() => {k = determine_k(k_input, k), path = path_construction(k_input, path), valid = determine_valid(k_input), update(path)}}>Classify</button>
+    </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- <style>
   rect {
