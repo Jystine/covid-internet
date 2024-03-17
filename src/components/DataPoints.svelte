@@ -89,16 +89,14 @@
     }
 
     function determine_valid(k_input) {
-      if (k_input !== undefined) {
-        if (k_input >= 1 && k_input <= 150 && Number.isInteger(Number(k_input))) {
+      if (k_input >= 1 && k_input <= 150 && Number.isInteger(Number(k_input))) {
           return true
-        } else {
-          return false
-        }
+      } else {
+        return false
       }
     }
 
-  $: console.log(typeof k_input);
+  $: console.log(k_input);
 </script>
 
 <div id = "plot" class = "absolute">
